@@ -39,6 +39,9 @@
         ::-webkit-scrollbar-track { background: var(--bg-deep); }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
         ::-webkit-scrollbar-thumb:hover { background: var(--brand-primary); }
+        
+        /* Ensure content is visible */
+        #root { min-height: 100vh; display: flex; flex-direction: column; }
     </style>
     <script type="importmap">
 {
