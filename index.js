@@ -18,7 +18,10 @@ const mount = () => {
     `);
   } catch (error) {
     console.error("Mounting error:", error);
-    rootElement.innerHTML = `<div style="padding: 2rem; color: white;">Error loading application. Check console for details.</div>`;
+    rootElement.innerHTML = `<div style="padding: 2rem; color: white; text-align: center;">
+      <h1 style="font-family: Orbitron; margin-bottom: 1rem;">SYSTEM ERROR</h1>
+      <p style="opacity: 0.6;">Critical failure during initialization. Check console for logs.</p>
+    </div>`;
   }
 };
 

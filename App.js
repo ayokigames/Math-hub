@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { HashRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { 
   Search, 
@@ -13,7 +13,8 @@ import {
   Cpu,
   Zap,
   Play,
-  ArrowLeft
+  ArrowLeft,
+  Maximize
 } from 'lucide-react';
 import htm from 'htm';
 import { GameCategory } from './types.js';
@@ -207,10 +208,25 @@ const GameDetail = ({ games }) => {
   const { pathname } = useLocation();
   const gameId = pathname.split('/').pop();
   const game = useMemo(() => games.find(g => g.id === gameId), [games, gameId]);
+  const iframeRef = useRef(null);
   
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [game]);
+
+  const toggleFullScreen = () => {
+    if (iframeRef.current) {
+      if (iframeRef.current.requestFullscreen) {
+        iframeRef.current.requestFullscreen();
+      } else if (iframeRef.current.mozRequestFullScreen) { /* Firefox */
+        iframeRef.current.mozRequestFullScreen();
+      } else if (iframeRef.current.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+        iframeRef.current.webkitRequestFullscreen();
+      } else if (iframeRef.current.msRequestFullscreen) { /* IE/Edge */
+        iframeRef.current.msRequestFullscreen();
+      }
+    }
+  };
 
   if (!game) return html`
     <div className="p-20 text-center font-orbitron text-slate-700 flex flex-col items-center gap-6">
@@ -232,13 +248,21 @@ const GameDetail = ({ games }) => {
         </div>
       </div>
 
-      <div className="relative aspect-video w-full bg-black rounded-[2rem] overflow-hidden border border-white/5 shadow-[0_0_100px_-20px_rgba(99,102,241,0.2)]">
+      <div className="relative group aspect-video w-full bg-black rounded-[2rem] overflow-hidden border border-white/5 shadow-[0_0_100px_-20px_rgba(99,102,241,0.2)]">
         <iframe 
+          ref=${iframeRef}
           src="${game.url}" 
           title="${game.title}"
           className="w-full h-full border-0"
           allowFullScreen
         />
+        <button 
+          onClick=${toggleFullScreen}
+          className="absolute bottom-6 right-6 p-3 bg-black/60 backdrop-blur-xl border border-white/10 text-white rounded-xl opacity-0 group-hover:opacity-100 transition-all hover:bg-indigo-600 hover:scale-110 active:scale-95"
+          title="Full Screen Mode"
+        >
+          <${Maximize} className="w-5 h-5" />
+        </button>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
@@ -279,8 +303,12 @@ const GameDetail = ({ games }) => {
                 <span className="text-green-500">Optimal</span>
               </div>
             </div>
-            <button className="w-full py-4 bg-indigo-600/10 hover:bg-indigo-600 text-indigo-400 hover:text-white text-[10px] font-black uppercase tracking-widest rounded-xl transition-all border border-indigo-500/20">
-              Refresh Module
+            <button 
+              onClick=${toggleFullScreen}
+              className="w-full py-4 bg-indigo-600 hover:bg-indigo-500 text-white text-[10px] font-black uppercase tracking-widest rounded-xl transition-all shadow-lg shadow-indigo-600/20 flex items-center justify-center gap-2"
+            >
+              <${Maximize} className="w-3 h-3" />
+              Full Screen Mode
             </button>
           </div>
         </div>
