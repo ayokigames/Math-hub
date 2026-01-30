@@ -1,7 +1,7 @@
 
-import { Game, GameCategory } from '../types';
+import { GameCategory } from '../types.ts';
 
-export const GAMES: Game[] = [
+export const GAMES = [
   {
     id: 'escape-road-2',
     title: 'Escape Roads 2',
@@ -45,26 +45,16 @@ export const GAMES: Game[] = [
   {
     id: 'cookie-clicker',
     title: 'Cookie Clicker',
-    description: 'The ultimate idle game about baking cookies.',
-    category: GameCategory.ADVENTURE,
+    description: 'The ultimate idle game about baking cookies and optimizing resource management.',
+    category: GameCategory.STRATEGY,
     thumbnail: 'https://picsum.photos/seed/cookie/400/300',
     url: 'https://orteil.dashnet.org/cookieclicker/',
     playCount: 77120
   },
   {
-    id: '2048',
-    title: '2048',
-    description: 'Join the numbers and get to the 2048 tile!',
-    category: GameCategory.PUZZLE,
-    thumbnail: 'https://picsum.photos/seed/2048/400/300',
-    url: 'https://play2048.co/',
-    playCount: 62000,
-    featured: true
-  },
-  {
     id: 'granny',
     title: 'Granny',
-    description: 'A stealth-based survival logic challenge. Analyze sound propagation and master environmental awareness to navigate complex indoor architecture and escape.',
+    description: 'A stealth-based survival logic challenge. Analyze sound propagation and master environmental awareness to navigate complex architecture.',
     category: GameCategory.ACTION,
     thumbnail: 'https://picsum.photos/seed/granny/400/300',
     url: 'https://gnhustgames.org/granny-source/',

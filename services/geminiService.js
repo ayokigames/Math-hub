@@ -1,6 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
 
-export const getGameGuide = async (gameTitle: string) => {
+export const getGameGuide = async (gameTitle) => {
   const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
   try {
     const response = await ai.models.generateContent({
@@ -11,9 +11,9 @@ export const getGameGuide = async (gameTitle: string) => {
         temperature: 0.7
       }
     });
-    return response.text || "Could not load guide. Just have fun!";
+    return response.text || "No tactical data available.";
   } catch (error) {
     console.error("Guide Error:", error);
-    return "Could not load guide. Just have fun!";
+    return "Tactical data stream interrupted.";
   }
 };

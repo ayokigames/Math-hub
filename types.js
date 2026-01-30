@@ -1,4 +1,3 @@
-
 export const GameCategory = {
   ACTION: 'Action',
   PUZZLE: 'Puzzle',

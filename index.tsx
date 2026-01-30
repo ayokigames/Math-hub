@@ -1,7 +1,9 @@
-
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
+import htm from 'htm';
+import MathHubApp from './App.tsx';
+
+const html = htm.bind(React.createElement);
 
 const rootElement = document.getElementById('root');
 if (!rootElement) {
@@ -9,8 +11,8 @@ if (!rootElement) {
 }
 
 const root = ReactDOM.createRoot(rootElement);
-root.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>
-);
+root.render(html`
+  <${React.StrictMode}>
+    <${MathHubApp} />
+  <//>
+`);
