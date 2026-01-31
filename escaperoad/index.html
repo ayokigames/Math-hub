@@ -7,10 +7,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
     <style>
         body, html { margin: 0; padding: 0; width: 100%; height: 100%; overflow: hidden; background: #000; color: #fff; }
-        #unity-container { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; position: relative; }
-        #unity-canvas { width: 100%; height: 100%; background: #000; }
+        .game-frame { border: none; width: 100%; height: 100%; background: #000; }
         .loader { 
             position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             color: #6366f1; 
             font-family: 'Orbitron', sans-serif; 
             font-weight: bold; 
@@ -23,45 +25,15 @@
     </style>
 </head>
 <body>
-    <div id="unity-container">
-        <canvas id="unity-canvas"></canvas>
-        <div id="loading-text" class="loader">INITIALIZING TACTICAL MODULE...</div>
-    </div>
-    <script>
-        // Unity Loader script initialization
-        const canvas = document.querySelector("#unity-canvas");
-        const loadingText = document.querySelector("#loading-text");
+    <div id="loading-text" class="loader">SYNCHRONIZING TACTICAL MODULE...</div>
+    <iframe class="game-frame" id="gameFrame" allowfullscreen="" src="https://genizymath.github.io/iframe/264.html" onload="document.getElementById('loading-text').style.display='none'"></iframe>
 
-        const config = {
-            dataUrl: "Build/EscapeRoad.data",
-            frameworkUrl: "Build/EscapeRoad.framework.js",
-            codeUrl: "Build/EscapeRoad.wasm",
-            streamingAssetsUrl: "StreamingAssets",
-            companyName: "MathHub",
-            productName: "Escape Road",
-            productVersion: "1.0",
-        };
-
-        const script = document.createElement("script");
-        script.src = "Build/UnityLoader.js";
-        script.onload = () => {
-            if (typeof createUnityInstance !== "undefined") {
-                createUnityInstance(canvas, config, (progress) => {
-                    loadingText.innerText = "LOADING: " + Math.round(100 * progress) + "%";
-                }).then(() => {
-                    loadingText.style.display = "none";
-                }).catch((err) => {
-                    loadingText.innerText = "MODULE INITIALIZATION ERROR";
-                    console.error(err);
-                });
-            } else {
-                loadingText.innerText = "LOADER SCRIPT FAILURE";
-            }
-        };
-        script.onerror = () => {
-            loadingText.innerText = "TACTICAL ASSETS NOT FOUND";
-        };
-        document.body.appendChild(script);
-    </script>
+    <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-app-compat.js" type="text/javascript"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore-compat.js" type="text/javascript"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-auth-compat.js" type="text/javascript"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.9.0/firebase-analytics-compat.js" type="text/javascript"></script>
+    <script src="TemplateData/loader.js"></script>
+    <script src="random.js"></script>
+    <script src="/javascript/script.js"></script>
 </body>
 </html>

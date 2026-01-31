@@ -34,14 +34,6 @@ export const GAMES = [
     url: 'https://classic.minecraft.net/'
   },
   {
-    id: 'fnaf-2',
-    title: 'FNAF 2',
-    description: 'Advanced multi-point surveillance and security optimization module. Coordinate defensive protocols and monitor power distribution across a high-risk facility network.',
-    category: GameCategory.ACTION,
-    thumbnail: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=600',
-    url: 'https://run3.io/popgame/fnaf/fnaf2.html'
-  },
-  {
     id: 'eggy-car',
     title: 'Eggy Car',
     description: 'High-precision kinetic balance and momentum-based transport simulator. Calculate optimal acceleration vectors to maintain structural integrity of delicate cargo across undulating terrains.',
@@ -95,6 +87,6 @@ export const GAMES = [
     description: 'The tactical navigation challenge that started it all. Updated with the latest coordination script.',
     category: GameCategory.ACTION,
     thumbnail: 'https://images.unsplash.com/photo-1511884642898-4c92249e20b6?auto=format&fit=crop&q=80&w=600',
-    url: 'https://azgames.io/game/escape-road/'
+    url: 'https://genizymath.github.io/iframe/264.html'
   }
 ];
