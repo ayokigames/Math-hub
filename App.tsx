@@ -3,7 +3,6 @@ import { HashRouter as Router, Routes, Route, Link, useLocation } from 'react-ro
 import { 
   Search, 
   Flame, 
-  Trophy, 
   Clock, 
   LayoutGrid,
   Sigma,
@@ -21,7 +20,9 @@ import {
   Sparkles,
   ExternalLink,
   Lock,
-  Monitor
+  Monitor,
+  Activity,
+  Cpu
 } from 'lucide-react';
 import htm from 'htm';
 import { GameCategory } from './types.ts';
@@ -35,7 +36,7 @@ const StealthProtocol = {
     const url = window.location.href;
     const win = window.open('about:blank', '_blank');
     if (!win) {
-      alert("Stealth Protocol Error: Popups restricted. Grant permission to initialize anonymous window.");
+      alert("Stealth Protocol Warning: Popups blocked. Enable popups to initialize anonymous window.");
       return;
     }
 
@@ -63,7 +64,10 @@ const StealthProtocol = {
     doc.body.style.overflow = 'hidden';
     doc.body.appendChild(iframe);
 
-    window.location.replace("https://www.google.com/search?q=calculus+notes+and+study+resources+2025");
+    // Redirect current tab to safety immediately after launch
+    setTimeout(() => {
+      window.location.replace("https://www.google.com/search?q=calculus+notes+2025+academic+study+guide");
+    }, 100);
   }
 };
 
@@ -77,7 +81,7 @@ const SettingsModal = ({ isOpen, onClose, cloakEnabled, onToggleCloak }) => {
         <div className="flex items-center justify-between">
           <h2 className="font-orbitron text-xl font-black text-white uppercase tracking-tighter flex items-center gap-4">
             <${Terminal} className="w-5 h-5 text-indigo-500" />
-            Operational Security
+            Security Matrix
           </h2>
           <button onClick=${onClose} className="p-2 hover:bg-white/5 rounded-xl transition-all">
             <${X} className="w-5 h-5 text-slate-500" />
@@ -91,17 +95,17 @@ const SettingsModal = ({ isOpen, onClose, cloakEnabled, onToggleCloak }) => {
                 <${Ghost} className="w-5 h-5 text-indigo-400" />
                 <h3 className="text-xs font-black text-white uppercase tracking-widest">About:Blank Cloak</h3>
               </div>
-              <span className="px-2 py-0.5 rounded bg-indigo-500/20 text-[9px] font-black text-indigo-400 uppercase">Stealth v3</span>
+              <span className="px-2 py-0.5 rounded bg-indigo-500/20 text-[9px] font-black text-indigo-400 uppercase">Operational</span>
             </div>
             <p className="text-[10px] text-slate-400 leading-relaxed font-medium">
-              Initialize the application inside an anonymous <code className="text-indigo-300">about:blank</code> tab. This method hides URLs from history and monitoring.
+              Initialize in an anonymous <code className="text-indigo-300">about:blank</code> tab. This leaves no trace in local browsing history.
             </p>
             <button 
               onClick=${StealthProtocol.launch}
               className="w-full flex items-center justify-center gap-2 py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-black rounded-2xl transition-all shadow-lg shadow-indigo-600/20 uppercase text-[10px] tracking-widest"
             >
               <${ExternalLink} className="w-4 h-4" />
-              Launch Stealth Session
+              Initialize Stealth Uplink
             </button>
           </div>
 
@@ -114,9 +118,9 @@ const SettingsModal = ({ isOpen, onClose, cloakEnabled, onToggleCloak }) => {
             }`}
           >
             <div className="space-y-1">
-              <h3 className="text-xs font-black text-white uppercase tracking-widest">Identity Masking</h3>
+              <h3 className="text-xs font-black text-white uppercase tracking-widest">Visual Mask</h3>
               <p className="text-[10px] text-slate-500 font-medium">
-                ${cloakEnabled ? 'Active: Site masked as "about:blank"' : 'Mask current tab metadata to evade detection.'}
+                ${cloakEnabled ? 'Active: Masked as "Google Docs"' : 'Rename current tab and replace favicon instantly.'}
               </p>
             </div>
             <${EyeOff} className=${`w-5 h-5 ${cloakEnabled ? 'text-green-400' : 'text-slate-600'}`} />
@@ -124,11 +128,11 @@ const SettingsModal = ({ isOpen, onClose, cloakEnabled, onToggleCloak }) => {
         </div>
 
         <div className="p-4 rounded-2xl bg-red-500/5 border border-red-500/10 flex items-center justify-between group">
-          <div className="flex items-center gap-3">
-            <${Shield} className="w-5 h-5 text-red-500" />
+          <div className="flex items-center gap-3 text-red-400">
+            <${Shield} className="w-5 h-5" />
             <div>
-              <span className="block text-[10px] font-black uppercase tracking-widest text-red-400">Panic Switch</span>
-              <span className="block text-[9px] font-bold text-red-500/60 uppercase">Press [ESC] to instantly terminate session</span>
+              <span className="block text-[10px] font-black uppercase tracking-widest">Panic Reset</span>
+              <span className="block text-[9px] font-bold text-red-500/60 uppercase">Press [ESC] to self-destruct session</span>
             </div>
           </div>
           <div className="px-3 py-1 bg-red-500/10 rounded-lg text-[10px] font-black text-red-400 border border-red-500/20">ESC</div>
@@ -142,7 +146,7 @@ const Navbar = ({ onSearch, onOpenSettings }) => html`
   <nav className="sticky top-0 z-50 glass-panel border-b border-white/5 px-6 py-4">
     <div className="max-w-[1600px] mx-auto flex items-center justify-between gap-8">
       <${Link} to="/" className="flex items-center gap-3 shrink-0">
-        <div className="bg-indigo-600 p-2.5 rounded-xl shadow-lg shadow-indigo-500/30">
+        <div className="bg-indigo-600 p-2.5 rounded-xl shadow-lg shadow-indigo-500/30 transition-transform hover:scale-105 active:scale-95">
           <${Sigma} className="w-5 h-5 text-white" />
         </div>
         <span className="font-orbitron text-lg font-black tracking-tighter text-white uppercase hidden sm:inline">Math Hub</span>
@@ -152,7 +156,7 @@ const Navbar = ({ onSearch, onOpenSettings }) => html`
         <${Search} className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
         <input 
           type="text" 
-          placeholder="Scan tactical modules..." 
+          placeholder="Scan operational modules..." 
           onInput=${(e) => onSearch(e.target.value)}
           className="w-full bg-slate-900/50 border border-white/10 rounded-2xl py-3 pl-12 pr-4 text-sm focus:outline-none focus:border-indigo-500 transition-all text-slate-200 placeholder:text-slate-600"
         />
@@ -236,33 +240,31 @@ const GameView = ({ games }) => {
   const game = games.find(g => g.id === id);
   const [guide, setGuide] = useState('');
   const [isLoading, setIsLoading] = useState(true);
-  const [loadMessage, setLoadMessage] = useState('Initializing operational baseline...');
+  const [operationalPhase, setOperationalPhase] = useState(0);
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
-  const messages = [
-    'Establishing secure uplink...',
-    'Bypassing institutional firewalls...',
-    'Synchronizing tactical modules...',
-    'Calibrating logic vectors...',
-    'Deploying stealth protocols...',
-    'Injecting operational data...',
+  const phases = [
+    { text: 'Handshaking operational core...', code: 'SEC_HS_001' },
+    { text: 'Establishing secure uplink...', code: 'UPLINK_STABLE' },
+    { text: 'Bypassing local restriction layers...', code: 'FIREWALL_BYPASS' },
+    { text: 'Decrypting tactical module assets...', code: 'DECRYPT_AES256' },
+    { text: 'Synchronizing interactive vectors...', code: 'VEC_SYNC_COMPL' },
+    { text: 'Finalizing operational readiness...', code: 'READY_OP' }
   ];
 
   useEffect(() => {
     if (game) {
       getGameGuide(game.title).then(setGuide);
       setIsLoading(true);
-      setLoadMessage(messages[0]);
+      setOperationalPhase(0);
     }
     window.scrollTo(0, 0);
 
-    let msgIndex = 0;
-    const interval = setInterval(() => {
-      msgIndex = (msgIndex + 1) % messages.length;
-      setLoadMessage(messages[msgIndex]);
-    }, 2000);
+    const phaseInterval = setInterval(() => {
+      setOperationalPhase(prev => (prev < phases.length - 1 ? prev + 1 : prev));
+    }, 1200);
 
-    return () => clearInterval(interval);
+    return () => clearInterval(phaseInterval);
   }, [game]);
 
   const enterFullscreen = () => {
@@ -285,28 +287,48 @@ const GameView = ({ games }) => {
         <div className="flex items-center gap-6">
           <button onClick=${StealthProtocol.launch} className="text-[10px] font-black uppercase tracking-widest text-indigo-400 hover:text-white transition-colors flex items-center gap-2">
             <${Shield} className="w-3.5 h-3.5" />
-            Anonymous Launch
+            Launch Cloaked
           </button>
         </div>
       </div>
 
       <div className="group relative aspect-video w-full bg-slate-950 rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl">
-        <div className=${`absolute inset-0 bg-[#020617] flex flex-col items-center justify-center z-20 transition-opacity duration-700 ${isLoading ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-          <div className="relative w-24 h-24 mb-10">
-            <div className="absolute inset-0 border-[3px] border-indigo-500/10 rounded-full"></div>
-            <div className="absolute inset-0 border-[3px] border-t-indigo-500 rounded-full animate-spin-slow"></div>
-            <div className="absolute inset-0 m-auto w-10 h-10 flex items-center justify-center text-indigo-500">
-               <${Sigma} className="w-8 h-8" />
+        <div className=${`absolute inset-0 bg-[#020617] flex flex-col items-center justify-center z-40 transition-all duration-1000 ${isLoading ? 'opacity-100' : 'opacity-0 pointer-events-none translate-y-full'}`}>
+          <div className="scanline"></div>
+          
+          <div className="relative mb-12">
+            <div className="w-32 h-32 border-[1px] border-indigo-500/20 rounded-full animate-spin-slow"></div>
+            <div className="absolute inset-0 m-auto w-24 h-24 border-t-2 border-indigo-500 rounded-full animate-spin"></div>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <${Sigma} className="w-10 h-10 text-indigo-500 animate-pulse" />
             </div>
           </div>
-          <div className="space-y-3 text-center">
-            <div className="font-orbitron text-[10px] font-black uppercase tracking-[0.5em] text-indigo-400/80 animate-pulse">
-              ${loadMessage}
+
+          <div className="space-y-6 text-center max-w-sm">
+            <div className="flex flex-col gap-1">
+              <span className="text-[9px] font-black text-indigo-500/50 uppercase tracking-[0.4em] font-mono">
+                [ STATUS: ${phases[operationalPhase].code} ]
+              </span>
+              <h2 className="font-orbitron text-xs font-black uppercase tracking-[0.3em] text-white">
+                ${phases[operationalPhase].text}
+              </h2>
             </div>
-            <div className="flex justify-center gap-1.5">
-              <div className="w-1 h-1 bg-indigo-500 rounded-full animate-bounce [animation-delay:-0.3s]"></div>
-              <div className="w-1 h-1 bg-indigo-500 rounded-full animate-bounce [animation-delay:-0.15s]"></div>
-              <div className="w-1 h-1 bg-indigo-500 rounded-full animate-bounce"></div>
+            
+            <div className="flex items-center gap-4">
+              <div className="h-[2px] flex-1 bg-white/5 rounded-full overflow-hidden">
+                <div 
+                  className="h-full bg-indigo-500 transition-all duration-1000 ease-out"
+                  style=${{ width: `${((operationalPhase + 1) / phases.length) * 100}%` }}
+                ></div>
+              </div>
+              <span className="text-[10px] font-mono text-indigo-400 font-bold">
+                ${Math.round(((operationalPhase + 1) / phases.length) * 100)}%
+              </span>
+            </div>
+
+            <div className="flex items-center justify-center gap-6 text-[9px] font-black text-slate-600 uppercase tracking-widest">
+              <span className="flex items-center gap-2"><${Activity} className="w-3 h-3 text-green-500" /> Uplink: High</span>
+              <span className="flex items-center gap-2"><${Cpu} className="w-3 h-3 text-indigo-500" /> Core: Active</span>
             </div>
           </div>
         </div>
@@ -316,7 +338,10 @@ const GameView = ({ games }) => {
           src="${game.url}" 
           className="w-full h-full border-0" 
           allow="autoplay; fullscreen; keyboard" 
-          onLoad=${() => setIsLoading(false)}
+          onLoad=${() => {
+             // Artificial delay to ensure visuals look good
+             setTimeout(() => setIsLoading(false), 800);
+          }}
         />
         
         <div className="absolute top-6 right-6 flex gap-3 opacity-0 group-hover:opacity-100 transition-all z-30">
@@ -332,7 +357,7 @@ const GameView = ({ games }) => {
             <h1 className="font-orbitron text-4xl lg:text-5xl font-black text-white uppercase tracking-tighter">${game.title}</h1>
             <div className="flex items-center gap-4 text-indigo-400">
               <span className="px-3 py-1 bg-indigo-500/10 rounded-lg text-[10px] font-black tracking-widest border border-indigo-500/20 uppercase">${game.category} Module</span>
-              <span className="text-[10px] font-bold text-slate-600 uppercase tracking-widest">Protocol: Established</span>
+              <span className="text-[10px] font-bold text-slate-600 uppercase tracking-widest">Baseline: Established</span>
             </div>
           </div>
           <p className="text-slate-400 text-lg leading-relaxed font-medium max-w-4xl">${game.description}</p>
@@ -341,12 +366,12 @@ const GameView = ({ games }) => {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3 text-indigo-400">
               <${Sparkles} className="w-5 h-5" />
-              <h4 className="text-[10px] font-black uppercase tracking-widest">Tactical Intel</h4>
+              <h4 className="text-[10px] font-black uppercase tracking-widest">Tactical Intelligence</h4>
             </div>
             <${Terminal} className="w-4 h-4 text-slate-700" />
           </div>
-          <div className="text-[11px] text-slate-300 font-medium leading-relaxed whitespace-pre-wrap font-mono opacity-80">
-            ${guide || 'Synthesizing guide data...'}
+          <div className="text-[11px] text-slate-300 font-medium leading-relaxed whitespace-pre-wrap font-mono opacity-80 bg-black/20 p-4 rounded-2xl border border-white/5">
+            ${guide || 'Generating operational intelligence...'}
           </div>
         </div>
       </div>
@@ -362,7 +387,7 @@ const MathHubApp = () => {
 
   useEffect(() => {
     const handlePanic = (e) => {
-      if (e.key === 'Escape') window.location.replace("https://www.google.com/search?q=academic+integrity+and+calculus+study+skills");
+      if (e.key === 'Escape') window.location.replace("https://www.google.com/search?q=calculus+notes+and+academic+integrity+2025");
     };
     window.addEventListener('keydown', handlePanic);
     return () => window.removeEventListener('keydown', handlePanic);
@@ -371,7 +396,7 @@ const MathHubApp = () => {
   const toggleCloak = () => {
     const val = !cloakEnabled;
     setCloakEnabled(val);
-    document.title = val ? "about:blank" : "Math Hub | Command Center";
+    document.title = val ? "Google Docs" : "Math Hub | Command Center";
     
     let link = document.querySelector("link[rel~='icon']") as HTMLLinkElement | null;
     if (!link) {
@@ -397,16 +422,16 @@ const MathHubApp = () => {
           <div className="max-w-[1600px] mx-auto flex flex-col md:flex-row items-center justify-between gap-10 opacity-40 grayscale group hover:grayscale-0 hover:opacity-100 transition-all duration-700">
             <div className="flex items-center gap-3">
               <${Sigma} className="w-5 h-5 text-indigo-500" />
-              <span className="font-orbitron font-black uppercase text-xs tracking-[0.4em] text-white">Math Hub v3.9.5-S</span>
+              <span className="font-orbitron font-black uppercase text-xs tracking-[0.4em] text-white">Math Hub v4.0.0-PRO</span>
             </div>
             <div className="flex gap-10 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500">
               <a href="#" className="hover:text-indigo-400 transition-colors">Nodes</a>
+              <a href="#" className="hover:text-indigo-400 transition-colors">Protocol</a>
               <a href="#" className="hover:text-indigo-400 transition-colors">Manifesto</a>
-              <a href="#" className="hover:text-indigo-400 transition-colors">Encryption</a>
             </div>
             <div className="flex items-center gap-2 text-[10px] font-black text-slate-600 uppercase tracking-widest">
               <${Lock} className="w-3.5 h-3.5" />
-              Connection Secure
+              End-to-End Secure
             </div>
           </div>
         </footer>
