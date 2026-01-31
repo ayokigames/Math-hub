@@ -5,13 +5,29 @@
     "description": "A strategic social interaction simulator with high-stakes decision making. Navigate complex classroom hierarchies and solve environmental puzzles to complete the objective cycle.",
     "category": "Strategy",
     "thumbnail": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&q=80&w=600",
-    "url": "https://genizymath.github.io/iframe/445.html",
+    "url": "/kindergarten/index.html",
     "featured": true
+  },
+  {
+    "id": "1v1-lol",
+    "title": "1v1.LOL",
+    "description": "Tactical close-quarters combat simulation with real-time structural modification.",
+    "category": "Action",
+    "thumbnail": "https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=600",
+    "url": "https://1v1.lol/"
+  },
+  {
+    "id": "retro-bowl",
+    "title": "Retro Bowl",
+    "description": "Advanced athletic management and strategic offensive coordination.",
+    "category": "Strategy",
+    "thumbnail": "https://images.unsplash.com/photo-1566577739112-5180d4bf9390?auto=format&fit=crop&q=80&w=600",
+    "url": "https://game316024.konggames.com/gamez/0031/6024/live/index.html"
   },
   {
     "id": "fnaf-2",
     "title": "FNAF 2",
-    "description": "Advanced multi-point surveillance and security optimization module. Coordinate defensive protocols and monitor power distribution across a high-risk facility network.",
+    "description": "Advanced multi-point surveillance and security optimization module.",
     "category": "Action",
     "thumbnail": "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&q=80&w=600",
     "url": "https://run3.io/popgame/fnaf/fnaf2.html"
@@ -19,7 +35,7 @@
   {
     "id": "escape-road-2",
     "title": "Escape Roads 2",
-    "description": "A high-intensity strategic evasion simulator. Calculate optimal escape vectors and navigate complex road networks using the latest engine updates.",
+    "description": "A high-intensity strategic evasion simulator. Calculate optimal escape vectors and navigate complex road networks.",
     "category": "Action",
     "thumbnail": "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=600",
     "url": "/escaperoad/index.html",
@@ -28,44 +44,10 @@
   {
     "id": "slope",
     "title": "Slope",
-    "description": "A high-speed 3D spatial reasoning challenge. Navigate the ball through an endless obstacle course to test your reflexes and logic.",
+    "description": "A high-speed 3D spatial reasoning challenge. Navigate the ball through an endless obstacle course.",
     "category": "Action",
     "thumbnail": "https://picsum.photos/seed/slope/400/300",
     "url": "https://azgames.io/game/xlope/",
     "featured": true
-  },
-  {
-    "id": "pacman",
-    "title": "Google Pacman",
-    "description": "Classic arcade action right in your browser.",
-    "category": "Retro",
-    "thumbnail": "https://picsum.photos/seed/pacman/400/300",
-    "url": "https://www.google.com/logos/2010/pacman10-i.html",
-    "featured": true
-  },
-  {
-    "id": "cookie-clicker",
-    "title": "Cookie Clicker",
-    "description": "The ultimate idle game about baking cookies.",
-    "category": "Adventure",
-    "thumbnail": "https://picsum.photos/seed/cookie/400/300",
-    "url": "https://orteil.dashnet.org/cookieclicker/"
-  },
-  {
-    "id": "granny",
-    "title": "Granny",
-    "description": "A stealth-based survival logic challenge. Analyze sound propagation and master environmental awareness to navigate complex architecture.",
-    "category": "Action",
-    "thumbnail": "https://picsum.photos/seed/granny/400/300",
-    "url": "https://gnhustgames.org/granny-source/",
-    "featured": true
-  },
-  {
-    "id": "tetris",
-    "title": "Classic Tetris",
-    "description": "The world-famous block-stacking puzzle game.",
-    "category": "Puzzle",
-    "thumbnail": "https://picsum.photos/seed/tetris/400/300",
-    "url": "https://tetris.com/play-tetris"
   }
 ]

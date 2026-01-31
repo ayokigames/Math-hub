@@ -126,7 +126,7 @@ const GameCard = ({ game }) => {
       </div>
       <div className="p-5 flex-1 flex flex-col justify-between">
         <div>
-          <h3 className="font-orbitron text-base font-bold text-slate-100 group-hover:text-indigo-400 transition-colors mb-2">
+          <h3 className="font-orbitron text-base font-bold text-slate-100 group-hover:text-indigo-400 transition-colors mb-2 text-ellipsis overflow-hidden whitespace-nowrap">
             ${game.title}
           </h3>
           <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed font-medium mb-4">
@@ -174,7 +174,7 @@ const HomePage = ({ games, searchQuery, activeCategory }) => {
               Secure baseline for high-performance interactive training modules and tactical coordination.
             </p>
             <div className="flex gap-4">
-              <${Link} to="/game/escape-road-2" className="flex items-center gap-3 px-8 py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-black rounded-xl transition-all shadow-xl shadow-indigo-600/30 uppercase text-xs tracking-[0.2em]">
+              <${Link} to="/game/1v1-lol" className="flex items-center gap-3 px-8 py-4 bg-indigo-600 hover:bg-indigo-500 text-white font-black rounded-xl transition-all shadow-xl shadow-indigo-600/30 uppercase text-xs tracking-[0.2em]">
                 Initialize Primary Session
                 <${ChevronRight} className="w-4 h-4" />
               <//>
@@ -247,7 +247,8 @@ const GameDetail = ({ games }) => {
           src="${game.url}" 
           title="${game.title}"
           className="w-full h-full border-0"
-          allow="autoplay; fullscreen; keyboard; gamepad"
+          allow="autoplay; fullscreen; keyboard; gamepad; microphone; camera; midi; encrypted-media; xr-spatial-tracking"
+          sandbox="allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-scripts allow-same-origin allow-storage-access-by-user-activation"
           allowFullScreen
           loading="lazy"
         />
@@ -268,7 +269,7 @@ const GameDetail = ({ games }) => {
               ${game.category}
             </span>
             <span className="text-[10px] font-bold text-slate-600 uppercase tracking-widest">
-              Stability: 100%
+              Stability: Optimal
             </span>
           </div>
         </div>
