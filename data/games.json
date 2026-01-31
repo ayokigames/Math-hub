@@ -4,50 +4,50 @@
     "title": "Bad Parenting 1",
     "description": "A psychological survival strategy module. Navigate complex household dynamics and analyze environmental cues.",
     "category": "Strategy",
-    "thumbnail": "https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?auto=format&fit=crop&q=80&w=600",
+    "thumbnail": "https://images.unsplash.com/photo-1505632958218-4f23394784a6?auto=format&fit=crop&q=80&w=600",
     "url": "https://genizymath.github.io/iframe/166.html",
     "featured": true
   },
   {
     "id": "kindergarten",
     "title": "Kindergarten",
-    "description": "A strategic social interaction simulator with high-stakes decision making. Navigate complex classroom hierarchies and solve environmental puzzles to complete the objective cycle.",
+    "description": "A strategic social interaction simulator with high-stakes decision making.",
     "category": "Strategy",
-    "thumbnail": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&q=80&w=600",
+    "thumbnail": "https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&q=80&w=600",
     "url": "https://genizymath.github.io/iframe/445.html",
     "featured": true
   },
   {
     "id": "kindergarten-2",
     "title": "Kindergarten 2",
-    "description": "The advanced sequel to the tactical social interaction simulator. Navigate complex educational environments and optimize your decision-making.",
+    "description": "The advanced sequel to the tactical social interaction simulator.",
     "category": "Strategy",
-    "thumbnail": "https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&q=80&w=600",
+    "thumbnail": "https://images.unsplash.com/photo-1546410531-bb4caa6b424d?auto=format&fit=crop&q=80&w=600",
     "url": "https://genizymath.github.io/iframe/446.html",
     "featured": true
   },
   {
     "id": "escape-road-2",
     "title": "Escape Roads 2",
-    "description": "A high-intensity strategic evasion simulator. Calculate optimal escape vectors and navigate complex road networks.",
+    "description": "A high-intensity strategic evasion simulator.",
     "category": "Action",
-    "thumbnail": "https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=600",
+    "thumbnail": "https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&q=80&w=600",
     "url": "https://1games.io/game/escape-road-2/",
     "featured": true
   },
   {
     "id": "slope",
     "title": "Slope",
-    "description": "A high-speed 3D spatial reasoning challenge. Navigate the ball through an endless obstacle course.",
+    "description": "A high-speed 3D spatial reasoning challenge.",
     "category": "Action",
-    "thumbnail": "https://picsum.photos/seed/slope/400/300",
+    "thumbnail": "https://images.unsplash.com/photo-1614850523296-d8c1af93d400?auto=format&fit=crop&q=80&w=600",
     "url": "https://azgames.io/game/xlope/",
     "featured": true
   },
   {
     "id": "escape-road-classic",
     "title": "Escape Road",
-    "description": "The tactical navigation challenge that started it all. Updated with the latest coordination script.",
+    "description": "The tactical navigation challenge that started it all.",
     "category": "Action",
     "thumbnail": "https://images.unsplash.com/photo-1511884642898-4c92249e20b6?auto=format&fit=crop&q=80&w=600",
     "url": "https://genizymath.github.io/iframe/264.html"

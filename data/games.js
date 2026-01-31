@@ -6,7 +6,7 @@ export const GAMES = [
     title: 'Bad Parenting 1',
     description: 'A psychological survival strategy module. Navigate complex household dynamics and analyze environmental cues to maintain system stability in a high-tension atmosphere.',
     category: GameCategory.STRATEGY,
-    thumbnail: 'https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?auto=format&fit=crop&q=80&w=600',
+    thumbnail: 'https://images.unsplash.com/photo-1505632958218-4f23394784a6?auto=format&fit=crop&q=80&w=600',
     url: 'https://genizymath.github.io/iframe/166.html'
   },
   {
@@ -14,7 +14,7 @@ export const GAMES = [
     title: 'Kindergarten',
     description: 'A strategic social interaction simulator with high-stakes decision making. Navigate complex classroom hierarchies and solve environmental puzzles to complete the objective cycle.',
     category: GameCategory.STRATEGY,
-    thumbnail: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&q=80&w=600',
+    thumbnail: 'https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&q=80&w=600',
     url: 'https://genizymath.github.io/iframe/445.html'
   },
   {
@@ -22,7 +22,7 @@ export const GAMES = [
     title: 'Kindergarten 2',
     description: 'The advanced sequel to the tactical social interaction simulator. Navigate complex educational environments and optimize your decision-making to survive a new day in a high-stakes school setting.',
     category: GameCategory.STRATEGY,
-    thumbnail: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&fit=crop&q=80&w=600',
+    thumbnail: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?auto=format&fit=crop&q=80&w=600',
     url: 'https://genizymath.github.io/iframe/446.html'
   },
   {
@@ -38,7 +38,7 @@ export const GAMES = [
     title: 'Eggy Car',
     description: 'High-precision kinetic balance and momentum-based transport simulator. Calculate optimal acceleration vectors to maintain structural integrity of delicate cargo across undulating terrains.',
     category: GameCategory.ACTION,
-    thumbnail: 'https://images.unsplash.com/photo-1594739297381-e43d34994244?auto=format&fit=crop&q=80&w=600',
+    thumbnail: 'https://images.unsplash.com/photo-1484439168154-ca021000632a?auto=format&fit=crop&q=80&w=600',
     url: 'https://www.hoodamath.com/mobile/games/eggy-car/game.html?nocheckorient=1'
   },
   {
@@ -46,7 +46,7 @@ export const GAMES = [
     title: 'Rocket League',
     description: 'High-velocity physics-based soccer. Calculate complex ball trajectories and master aerial propulsion logic to dominate the arena.',
     category: GameCategory.ACTION,
-    thumbnail: 'https://images.unsplash.com/photo-1593344484962-796055d4a3a4?auto=format&fit=crop&q=80&w=600',
+    thumbnail: 'https://images.unsplash.com/photo-1624138784614-87fd1b6528f8?auto=format&fit=crop&q=80&w=600',
     url: 'https://rocketgoal.io/?sdk=crazy&skipPrerollFirstSession=true'
   },
   {
@@ -54,7 +54,7 @@ export const GAMES = [
     title: 'Escape Roads 2',
     description: 'A high-intensity strategic evasion simulator. Calculate optimal escape vectors and navigate complex road networks using the latest engine updates.',
     category: GameCategory.ACTION,
-    thumbnail: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=600',
+    thumbnail: 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&q=80&w=600',
     url: 'https://1games.io/game/escape-road-2/'
   },
   {
@@ -62,7 +62,7 @@ export const GAMES = [
     title: 'Slope',
     description: 'High-speed 3D spatial reasoning challenge. Navigate gravity-defying courses with precision.',
     category: GameCategory.ACTION,
-    thumbnail: 'https://images.unsplash.com/photo-1614850715649-1d0106293bd1?auto=format&fit=crop&q=80&w=600',
+    thumbnail: 'https://images.unsplash.com/photo-1614850523296-d8c1af93d400?auto=format&fit=crop&q=80&w=600',
     url: 'https://azgames.io/game/xlope/'
   },
   {
