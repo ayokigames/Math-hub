@@ -2,6 +2,14 @@ import { GameCategory } from '../types.js';
 
 export const GAMES = [
   {
+    id: 'bad-parenting-1',
+    title: 'Bad Parenting 1',
+    description: 'A psychological survival strategy module. Navigate complex household dynamics and analyze environmental cues to maintain system stability in a high-tension atmosphere.',
+    category: GameCategory.STRATEGY,
+    thumbnail: 'https://images.unsplash.com/photo-1518020382113-a7e8fc38eac9?auto=format&fit=crop&q=80&w=600',
+    url: 'https://genizymath.github.io/iframe/166.html'
+  },
+  {
     id: 'kindergarten',
     title: 'Kindergarten',
     description: 'A strategic social interaction simulator with high-stakes decision making. Navigate complex classroom hierarchies and solve environmental puzzles to complete the objective cycle.',
