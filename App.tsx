@@ -15,22 +15,15 @@ import {
   Settings,
   Shield,
   Ghost,
-  X,
   EyeOff,
   Sparkles,
   ExternalLink,
   Lock,
-  Monitor,
-  Activity,
   Cpu,
-  CheckCircle2,
   Zap,
   Layers,
-  Wind,
   Trash2,
-  RefreshCw,
-  Sun,
-  Layout
+  Sun
 } from 'lucide-react';
 import htm from 'htm';
 import { GameCategory } from './types.ts';
@@ -213,10 +206,6 @@ const Sidebar = () => {
             <div className="h-full w-[88%] bg-indigo-500 shadow-[0_0_8px_#6366f1]"></div>
           </div>
         </div>
-        <div className="px-4 py-3 bg-indigo-600/5 rounded-xl border border-indigo-500/10">
-          <p className="text-[10px] font-black text-indigo-400 uppercase mb-2 tracking-widest">System Notice</p>
-          <p className="text-[9px] text-slate-500 leading-relaxed font-bold">Panic key [ESC] is active. Redirects to DVUSD Portal instantly.</p>
-        </div>
       </div>
     </aside>
   `;
@@ -229,16 +218,6 @@ const HomePage = ({ games, searchQuery }) => {
 
   return html`
     <div className="animate-in space-y-10">
-      <div className="flex items-center justify-between">
-        <div className="space-y-1">
-          <h2 className="text-sm font-black text-white uppercase tracking-[0.3em]">Module Archive</h2>
-          <p className="text-[10px] text-slate-600 font-bold uppercase tracking-widest">Accessing Baseline Logic Systems</p>
-        </div>
-        <div className="text-[10px] font-bold text-slate-600 uppercase tracking-widest px-4 py-2 glass-panel rounded-lg border border-white/5">
-          ${filtered.length} Active Nodes
-        </div>
-      </div>
-
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-4 gap-8">
         ${filtered.map(game => html`
           <${Link} key=${game.id} to="/game/${game.id}" className="command-card flex flex-col glass-panel rounded-3xl overflow-hidden border border-white/5 group shadow-lg">
@@ -252,10 +231,7 @@ const HomePage = ({ games, searchQuery }) => {
               </div>
             </div>
             <div className="p-6 space-y-3">
-              <div className="flex justify-between items-start">
-                <h3 className="font-orbitron text-sm font-bold text-white group-hover:text-indigo-400 truncate pr-4">${game.title}</h3>
-                <${ChevronRight} className="w-4 h-4 text-slate-700 group-hover:text-indigo-500 transition-all" />
-              </div>
+              <h3 className="font-orbitron text-sm font-bold text-white group-hover:text-indigo-400 truncate pr-4">${game.title}</h3>
               <p className="text-[10px] text-slate-500 font-bold uppercase tracking-[0.2em]">${game.category}</p>
             </div>
           <//>
@@ -279,10 +255,7 @@ const GameView = ({ games, performanceSettings }) => {
       setIsLoading(true);
       setProgress(0);
       window.scrollTo(0, 0);
-
-      const interval = setInterval(() => {
-        setProgress(p => (p < 90 ? p + Math.random() * 10 : p));
-      }, 500);
+      const interval = setInterval(() => setProgress(p => (p < 90 ? p + Math.random() * 10 : p)), 500);
       return () => clearInterval(interval);
     }
   }, [game]);
@@ -299,7 +272,7 @@ const GameView = ({ games, performanceSettings }) => {
       <div className="flex items-center justify-between">
         <${Link} to="/" className="inline-flex items-center gap-3 text-[10px] font-black uppercase tracking-widest text-slate-500 hover:text-white transition-colors bg-white/5 px-4 py-2 rounded-xl">
           <${ArrowLeft} className="w-3.5 h-3.5" />
-          Back to Directory
+          Directory Hub
         <//>
       </div>
 
@@ -309,7 +282,6 @@ const GameView = ({ games, performanceSettings }) => {
           <div className="absolute inset-0 bg-[#020617] flex flex-col items-center justify-center z-50">
             <div className="relative mb-8">
               <div className="w-24 h-24 border-t-2 border-indigo-500 rounded-full animate-spin"></div>
-              <div className="absolute inset-0 m-auto w-12 h-12 border-b-2 border-indigo-400 rounded-full animate-spin-slow"></div>
             </div>
             <div className="w-48 space-y-3">
               <p className="text-[10px] font-black text-white uppercase tracking-widest text-center">Decrypting Module...</p>
