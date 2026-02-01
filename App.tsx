@@ -22,7 +22,9 @@ import {
   Lock,
   Monitor,
   Activity,
-  Cpu
+  Cpu,
+  AlertCircle,
+  CheckCircle2
 } from 'lucide-react';
 import htm from 'htm';
 import { GameCategory } from './types.ts';
@@ -64,7 +66,6 @@ const StealthProtocol = {
     doc.body.style.overflow = 'hidden';
     doc.body.appendChild(iframe);
 
-    // Redirect current tab to safety immediately after launch
     setTimeout(() => {
       window.location.replace("https://www.google.com/search?q=calculus+notes+2025+academic+study+guide");
     }, 100);
@@ -241,15 +242,16 @@ const GameView = ({ games }) => {
   const [guide, setGuide] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [operationalPhase, setOperationalPhase] = useState(0);
+  const [progress, setProgress] = useState(0);
   const iframeRef = useRef<HTMLIFrameElement>(null);
 
   const phases = [
-    { text: 'Handshaking operational core...', code: 'SEC_HS_001' },
-    { text: 'Establishing secure uplink...', code: 'UPLINK_STABLE' },
-    { text: 'Bypassing local restriction layers...', code: 'FIREWALL_BYPASS' },
-    { text: 'Decrypting tactical module assets...', code: 'DECRYPT_AES256' },
-    { text: 'Synchronizing interactive vectors...', code: 'VEC_SYNC_COMPL' },
-    { text: 'Finalizing operational readiness...', code: 'READY_OP' }
+    { text: 'Establishing handshake...', code: 'SEC_HS_INIT', icon: Activity },
+    { text: 'Decrypting tactical assets...', code: 'AES256_OPEN', icon: Lock },
+    { text: 'Bypassing restriction layers...', code: 'FW_BYPASS_99', icon: Shield },
+    { text: 'Synchronizing interactive vectors...', code: 'SYNC_VEC_100', icon: Target },
+    { text: 'Finalizing tactical uplink...', code: 'UPLINK_READY', icon: Cpu },
+    { text: 'Operational verification complete.', code: 'INIT_VERIFIED', icon: CheckCircle2 }
   ];
 
   useEffect(() => {
@@ -257,12 +259,20 @@ const GameView = ({ games }) => {
       getGameGuide(game.title).then(setGuide);
       setIsLoading(true);
       setOperationalPhase(0);
+      setProgress(0);
     }
     window.scrollTo(0, 0);
 
     const phaseInterval = setInterval(() => {
-      setOperationalPhase(prev => (prev < phases.length - 1 ? prev + 1 : prev));
-    }, 1200);
+      setOperationalPhase(prev => {
+        if (prev < phases.length - 2) {
+          const next = prev + 1;
+          setProgress((next / (phases.length - 1)) * 90);
+          return next;
+        }
+        return prev;
+      });
+    }, 800);
 
     return () => clearInterval(phaseInterval);
   }, [game]);
@@ -273,6 +283,12 @@ const GameView = ({ games }) => {
       if (el.requestFullscreen) el.requestFullscreen();
       else if ((el as any).webkitRequestFullscreen) (el as any).webkitRequestFullscreen();
     }
+  };
+
+  const handleLoad = () => {
+    setOperationalPhase(phases.length - 1);
+    setProgress(100);
+    setTimeout(() => setIsLoading(false), 500);
   };
 
   if (!game) return html`<div className="p-40 text-center font-orbitron text-slate-500 uppercase tracking-[0.4em] opacity-30">ERR: DATA_CORRUPTED</div>`;
@@ -293,7 +309,7 @@ const GameView = ({ games }) => {
       </div>
 
       <div className="group relative aspect-video w-full bg-slate-950 rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl">
-        <div className=${`absolute inset-0 bg-[#020617] flex flex-col items-center justify-center z-40 transition-all duration-1000 ${isLoading ? 'opacity-100' : 'opacity-0 pointer-events-none translate-y-full'}`}>
+        <div className=${`absolute inset-0 bg-[#020617] flex flex-col items-center justify-center z-40 transition-all duration-1000 ${isLoading ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
           <div className="scanline"></div>
           
           <div className="relative mb-12">
@@ -304,31 +320,39 @@ const GameView = ({ games }) => {
             </div>
           </div>
 
-          <div className="space-y-6 text-center max-w-sm">
-            <div className="flex flex-col gap-1">
-              <span className="text-[9px] font-black text-indigo-500/50 uppercase tracking-[0.4em] font-mono">
-                [ STATUS: ${phases[operationalPhase].code} ]
+          <div className="space-y-6 text-center w-full max-w-sm px-6">
+            <div className="flex flex-col gap-1.5">
+              <span className="text-[10px] font-black text-indigo-500/50 uppercase tracking-[0.4em] font-mono flex items-center justify-center gap-2">
+                <span className="w-1 h-1 bg-indigo-500 rounded-full animate-ping"></span>
+                [ PHASE: ${phases[operationalPhase].code} ]
               </span>
-              <h2 className="font-orbitron text-xs font-black uppercase tracking-[0.3em] text-white">
+              <h2 className="font-orbitron text-xs font-black uppercase tracking-[0.3em] text-white flex items-center justify-center gap-3">
+                ${React.createElement(phases[operationalPhase].icon, { className: "w-3.5 h-3.5 text-indigo-400" })}
                 ${phases[operationalPhase].text}
               </h2>
             </div>
             
             <div className="flex items-center gap-4">
-              <div className="h-[2px] flex-1 bg-white/5 rounded-full overflow-hidden">
+              <div className="h-[2px] flex-1 bg-white/5 rounded-full overflow-hidden shadow-[inset_0_0_4px_black]">
                 <div 
-                  className="h-full bg-indigo-500 transition-all duration-1000 ease-out"
-                  style=${{ width: `${((operationalPhase + 1) / phases.length) * 100}%` }}
+                  className="h-full bg-indigo-500 transition-all duration-700 ease-out shadow-[0_0_10px_#6366f1]"
+                  style=${{ width: `${progress}%` }}
                 ></div>
               </div>
-              <span className="text-[10px] font-mono text-indigo-400 font-bold">
-                ${Math.round(((operationalPhase + 1) / phases.length) * 100)}%
+              <span className="text-[10px] font-mono text-indigo-400 font-bold min-w-[3ch]">
+                ${Math.round(progress)}%
               </span>
             </div>
 
-            <div className="flex items-center justify-center gap-6 text-[9px] font-black text-slate-600 uppercase tracking-widest">
-              <span className="flex items-center gap-2"><${Activity} className="w-3 h-3 text-green-500" /> Uplink: High</span>
-              <span className="flex items-center gap-2"><${Cpu} className="w-3 h-3 text-indigo-500" /> Core: Active</span>
+            <div className="grid grid-cols-2 gap-4 text-[9px] font-black text-slate-600 uppercase tracking-widest border-t border-white/5 pt-6">
+              <div className="flex flex-col items-center gap-2">
+                <span className="text-slate-700">Latency Check</span>
+                <span className="text-green-500/80 font-mono">12ms [STABLE]</span>
+              </div>
+              <div className="flex flex-col items-center gap-2">
+                <span className="text-slate-700">Encrypted</span>
+                <span className="text-indigo-400 font-mono">256-BIT [OK]</span>
+              </div>
             </div>
           </div>
         </div>
@@ -338,10 +362,7 @@ const GameView = ({ games }) => {
           src="${game.url}" 
           className="w-full h-full border-0" 
           allow="autoplay; fullscreen; keyboard" 
-          onLoad=${() => {
-             // Artificial delay to ensure visuals look good
-             setTimeout(() => setIsLoading(false), 800);
-          }}
+          onLoad=${handleLoad}
         />
         
         <div className="absolute top-6 right-6 flex gap-3 opacity-0 group-hover:opacity-100 transition-all z-30">
