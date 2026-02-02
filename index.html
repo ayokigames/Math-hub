@@ -11,7 +11,7 @@
         :root {
             --brand-primary: #6366f1;
             --bg-deep: #020617;
-            --bg-panel: rgba(15, 23, 42, 0.85);
+            --bg-panel: rgba(15, 23, 42, 0.95);
         }
         body {
             font-family: 'Inter', sans-serif;
@@ -57,7 +57,7 @@
             z-index: 10000;
             flex-direction: column;
             gap: 1.5rem;
-            transition: opacity 0.5s ease-out, visibility 0.5s;
+            transition: opacity 0.8s ease-in-out, visibility 0.8s;
         }
         
         .loader-ring {
@@ -89,15 +89,15 @@
 </script>
     <script>
         window.dismissLoader = function() {
-            var loader = document.getElementById('emergency-loader');
+            const loader = document.getElementById('emergency-loader');
             if (loader) {
                 loader.style.opacity = '0';
-                setTimeout(function() { loader.style.visibility = 'hidden'; }, 600);
+                setTimeout(() => { loader.style.visibility = 'hidden'; }, 800);
             }
         };
-        // Safety timeout
-        setTimeout(window.dismissLoader, 3000);
+        // Global error handler to prevent permanent hanging
         window.onerror = function() { window.dismissLoader(); };
+        setTimeout(window.dismissLoader, 4000);
     </script>
 </head>
 <body>
@@ -107,6 +107,6 @@
         <div style="font-family: 'Orbitron', sans-serif; font-size: 10px; color: #6366f1; letter-spacing: 5px; font-weight: 900; opacity: 0.8;">BOOTING_PROTOCOL_X</div>
     </div>
     <div id="root"></div>
-    <script type="module" src="index.tsx"></script>
+    <script type="module" src="./index.tsx"></script>
 </body>
 </html>

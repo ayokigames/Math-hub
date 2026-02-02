@@ -5,11 +5,11 @@ import App from './App.tsx';
 
 const html = htm.bind(React.createElement);
 
-// CRITICAL: Polyfill process for browser ESM compatibility
-if (typeof (window as any).process === 'undefined') {
-  (window as any).process = { 
+// CRITICAL: Polyfill process for browser ESM compatibility IMMEDIATELY
+if (typeof window['process'] === 'undefined') {
+  window['process'] = { 
     env: { 
-      API_KEY: (window as any)._env_?.API_KEY || '' 
+      API_KEY: window['_env_']?.API_KEY || '' 
     } 
   };
 }
@@ -17,14 +17,6 @@ if (typeof (window as any).process === 'undefined') {
 const mount = () => {
   const rootElement = document.getElementById('root');
   if (!rootElement) return;
-
-  const dismiss = (window as any).dismissLoader || (() => {
-    const loader = document.getElementById('emergency-loader');
-    if (loader) {
-      loader.style.opacity = '0';
-      setTimeout(() => loader.style.visibility = 'hidden', 600);
-    }
-  });
 
   try {
     const root = ReactDOM.createRoot(rootElement);
@@ -35,11 +27,14 @@ const mount = () => {
         <//>
       `
     );
-    // Dismiss loader once React takes over
-    setTimeout(dismiss, 100);
+    
+    // Dismiss the loader after React has finished the initial render cycle
+    if (window['dismissLoader']) {
+      setTimeout(() => window['dismissLoader'](), 200);
+    }
   } catch (err) {
     console.error("Mount Failure:", err);
-    dismiss();
+    if (window['dismissLoader']) window['dismissLoader']();
   }
 };
 
