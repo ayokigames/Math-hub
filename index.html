@@ -57,20 +57,34 @@
             z-index: 10000;
             flex-direction: column;
             gap: 1.5rem;
-            transition: opacity 0.8s ease-in-out, visibility 0.8s;
+            transition: opacity 0.6s ease-in-out, visibility 0.6s;
         }
         
         .loader-ring {
-            width: 48px;
-            height: 48px;
+            width: 50px;
+            height: 50px;
             border: 3px solid rgba(99, 102, 241, 0.1);
             border-top-color: #6366f1;
             border-radius: 50%;
-            animation: spin 1s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+            animation: spin 1s linear infinite;
         }
         
         @keyframes spin {
             to { transform: rotate(360deg); }
+        }
+
+        .bypass-btn {
+            margin-top: 20px;
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            color: #475569;
+            font-size: 10px;
+            cursor: pointer;
+            font-family: 'JetBrains Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
     </style>
     <script type="importmap">
@@ -92,11 +106,10 @@
             const loader = document.getElementById('emergency-loader');
             if (loader) {
                 loader.style.opacity = '0';
-                setTimeout(() => { loader.style.visibility = 'hidden'; }, 800);
+                setTimeout(() => { loader.style.visibility = 'hidden'; }, 600);
             }
         };
-        // Global error handler to prevent permanent hanging
-        window.onerror = function() { window.dismissLoader(); };
+        // Auto-dismiss fail-safe
         setTimeout(window.dismissLoader, 4000);
     </script>
 </head>
@@ -105,6 +118,7 @@
     <div id="emergency-loader">
         <div class="loader-ring"></div>
         <div style="font-family: 'Orbitron', sans-serif; font-size: 10px; color: #6366f1; letter-spacing: 5px; font-weight: 900; opacity: 0.8;">BOOTING_PROTOCOL_X</div>
+        <button class="bypass-btn" onclick="window.dismissLoader()">Force Initialized</button>
     </div>
     <div id="root"></div>
     <script type="module" src="./index.tsx"></script>

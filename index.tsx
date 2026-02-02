@@ -5,7 +5,7 @@ import App from './App.tsx';
 
 const html = htm.bind(React.createElement);
 
-// CRITICAL: Polyfill process for browser ESM compatibility IMMEDIATELY
+// Initialize process.env polyfill before anything else
 if (typeof window['process'] === 'undefined') {
   window['process'] = { 
     env: { 
@@ -28,9 +28,9 @@ const mount = () => {
       `
     );
     
-    // Dismiss the loader after React has finished the initial render cycle
+    // Attempt to dismiss loader after mount
     if (window['dismissLoader']) {
-      setTimeout(() => window['dismissLoader'](), 200);
+      setTimeout(() => window['dismissLoader'](), 300);
     }
   } catch (err) {
     console.error("Mount Failure:", err);
