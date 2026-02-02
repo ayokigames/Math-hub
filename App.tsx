@@ -14,8 +14,8 @@ const html = htm.bind(React.createElement);
 const GameCategory = {
   ACTION: 'Action',
   STRATEGY: 'Strategy',
-  DRIVING: 'Kinetic',
-  RETRO: 'Legacy'
+  KINETIC: 'Kinetic',
+  LEGACY: 'Legacy'
 };
 
 const GAMES = [
@@ -31,7 +31,7 @@ const GAMES = [
     id: 'clusterrush',
     title: 'Cluster Rush',
     description: 'Kinetic platforming module. Master momentum across shifting sectors and obstacle clusters.',
-    category: GameCategory.ACTION,
+    category: GameCategory.KINETIC,
     thumbnail: 'https://images.unsplash.com/photo-1590674899484-d5640e854abe?auto=format&fit=crop&q=80&w=600',
     url: 'https://genizymath.github.io/iframe/81.html'
   },
@@ -52,10 +52,18 @@ const GAMES = [
     url: 'https://genizymath.github.io/iframe/445.html'
   },
   {
+    id: 'kindergarten-2',
+    title: 'Kindergarten 2',
+    description: 'Advanced tactical social simulator. Complex NPC logic and expanded exploration sectors.',
+    category: GameCategory.STRATEGY,
+    thumbnail: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?auto=format&fit=crop&q=80&w=600',
+    url: 'https://genizymath.github.io/iframe/446.html'
+  },
+  {
     id: 'escape-road',
     title: 'Escape Road',
     description: 'Tactical navigation module. Calibrate reflexes for high-density urban transit avoidance.',
-    category: GameCategory.DRIVING,
+    category: GameCategory.KINETIC,
     thumbnail: 'https://images.unsplash.com/photo-1511884642898-4c92249e20b6?auto=format&fit=crop&q=80&w=600',
     url: 'https://genizymath.github.io/iframe/264.html'
   },
@@ -63,7 +71,7 @@ const GAMES = [
     id: 'cookie-clicker',
     title: 'Cookie Clicker',
     description: 'Infinite resource optimization. Scale production via massive algorithmic efficiency.',
-    category: GameCategory.RETRO,
+    category: GameCategory.LEGACY,
     thumbnail: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&q=80&w=600',
     url: 'https://orteil.dashnet.org/cookieclicker/'
   },
@@ -80,7 +88,7 @@ const GAMES = [
 const ARES_HUD = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState('');
-  const [messages, setMessages] = useState([{ role: 'ai', text: 'ARES-1 Tactical Online. Signal established.' }]);
+  const [messages, setMessages] = useState([{ role: 'ai', text: 'ARES-1 Tactical Online. Signal established. Query operational parameters for any module.' }]);
   const [loading, setLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -103,12 +111,12 @@ const ARES_HUD = () => {
         model: 'gemini-3-flash-preview',
         contents: userMsg,
         config: {
-          systemInstruction: 'You are ARES-1, a Tactical Support AI. Provide expert gaming strategies. Use technical, military terminology.'
+          systemInstruction: 'You are ARES-1, tactical support AI. Use professional, military-tech tone. Provide gaming strategies and tips.'
         }
       });
-      setMessages(prev => [...prev, { role: 'ai', text: response.text || 'SIGNAL_LOST' }]);
+      setMessages(prev => [...prev, { role: 'ai', text: response.text || 'RECEPTION_FAILURE' }]);
     } catch (err) {
-      setMessages(prev => [...prev, { role: 'ai', text: 'COMM_FAILURE: UPLINK_LOST' }]);
+      setMessages(prev => [...prev, { role: 'ai', text: 'COMM_FAILURE: UPLINK_STALLED' }]);
     } finally {
       setLoading(false);
     }
@@ -134,7 +142,7 @@ const ARES_HUD = () => {
                 </div>
               </div>
             `)}
-            ${loading && html`<div className="text-indigo-500/30 italic animate-pulse px-2 text-[9px]">ANALYZING...</div>`}
+            ${loading && html`<div className="text-indigo-500/30 italic animate-pulse px-2 text-[9px]">UPLINK_BUSY...</div>`}
           </div>
           <form onSubmit=${handleSend} className="p-3 bg-slate-900/80 border-t border-white/5 flex gap-2">
             <input type="text" value=${input} onInput=${(e: any) => setInput(e.target.value)} placeholder="Query..." className="flex-1 bg-black/50 border border-white/10 rounded-xl px-4 py-2 text-xs text-white" />
@@ -149,10 +157,10 @@ const ARES_HUD = () => {
 const App = () => {
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('all');
-  const [cloak, setCloak] = useState(() => localStorage.getItem('mh_cloak_v16') === 'true');
+  const [cloak, setCloak] = useState(() => localStorage.getItem('mh_cloak_v17') === 'true');
 
   useEffect(() => {
-    localStorage.setItem('mh_cloak_v16', cloak.toString());
+    localStorage.setItem('mh_cloak_v17', cloak.toString());
     document.title = cloak ? "about:blank" : "Math Hub | Tactical Command";
     
     const handlePanic = (e: KeyboardEvent) => { 
@@ -162,7 +170,13 @@ const App = () => {
     return () => window.removeEventListener('keydown', handlePanic);
   }, [cloak]);
 
-  const filtered = useMemo(() => GAMES.filter(g => (category === 'all' || g.category === category) && g.title.toLowerCase().includes(search.toLowerCase())), [search, category]);
+  const filtered = useMemo(() => {
+    return GAMES.filter(g => {
+      const matchesCategory = category === 'all' || g.category === category;
+      const matchesSearch = g.title.toLowerCase().includes(search.toLowerCase());
+      return matchesCategory && matchesSearch;
+    });
+  }, [search, category]);
 
   return html`
     <${Router}>
@@ -173,12 +187,26 @@ const App = () => {
               <div className="bg-indigo-600 p-3 rounded-2xl shadow-lg shadow-indigo-600/20"><${Sigma} className="w-7 h-7 text-white" /></div>
               <span className="font-orbitron text-3xl font-black tracking-tighter text-white uppercase hidden sm:block">MATH HUB</span>
             <//>
+            
             <div className="flex-1 max-w-2xl relative">
               <${Search} className="absolute left-6 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-600" />
-              <input type="text" placeholder="Scan assets..." value=${search} onInput=${(e: any) => setSearch(e.target.value)} className="w-full bg-slate-900/60 border border-white/10 rounded-2xl py-4 pl-16 pr-8 text-sm text-white focus:outline-none focus:border-indigo-500 transition-all font-mono" />
+              <input 
+                type="text" 
+                placeholder="Scan tactical assets..." 
+                value=${search} 
+                onInput=${(e: any) => setSearch(e.target.value)} 
+                className="w-full bg-slate-900/60 border border-white/10 rounded-2xl py-4 pl-16 pr-8 text-sm text-white focus:outline-none focus:border-indigo-500 transition-all font-mono" 
+              />
             </div>
+            
             <div className="flex items-center gap-4">
-              <button onClick=${() => setCloak(!cloak)} title="Stealth Protocol" className=${`p-4 rounded-2xl border transition-all ${cloak ? 'bg-green-600/10 text-green-400 border-green-500/20 shadow-[0_0_15px_rgba(34,197,94,0.2)]' : 'bg-white/5 text-slate-500 border-white/5 hover:text-white'}`}><${Ghost} className="w-6 h-6" /></button>
+              <button 
+                onClick=${() => setCloak(!cloak)} 
+                title="Stealth Protocol" 
+                className=${`p-4 rounded-2xl border transition-all ${cloak ? 'bg-green-600/10 text-green-400 border-green-500/20' : 'bg-white/5 text-slate-500 border-white/5 hover:text-white'}`}
+              >
+                <${Ghost} className="w-6 h-6" />
+              </button>
             </div>
           </div>
         </nav>
@@ -188,19 +216,27 @@ const App = () => {
             <div className="space-y-4">
               <p className="px-6 text-[11px] font-black uppercase tracking-[0.5em] text-slate-600">Categories</p>
               <nav className="flex lg:flex-col gap-2 overflow-x-auto pb-4 lg:pb-0 scrollbar-hide">
-                ${['all', GameCategory.ACTION, GameCategory.STRATEGY, GameCategory.DRIVING, GameCategory.RETRO].map(c => html`
+                ${['all', ...Object.values(GameCategory)].map(c => html`
                   <button key=${c} onClick=${() => setCategory(c)} className=${`px-8 py-5 rounded-[2rem] text-[12px] font-black uppercase tracking-[0.2em] whitespace-nowrap transition-all ${category === c ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20' : 'text-slate-500 hover:text-slate-200 hover:bg-white/5'}`}>
                     ${c === 'all' ? 'All Units' : c}
                   </button>
                 `)}
               </nav>
             </div>
+            
+            <div className="glass-panel p-8 rounded-[3rem] border border-white/5 space-y-4 hidden lg:block">
+              <h4 className="text-[10px] font-black text-indigo-400 uppercase tracking-widest flex items-center gap-2"><${Cpu} className="w-4 h-4" /> System Stats</h4>
+              <div className="space-y-3 font-mono text-[10px] text-slate-500">
+                <div className="flex justify-between"><span>Uptime</span><span className="text-indigo-400">99.98%</span></div>
+                <div className="flex justify-between"><span>Latency</span><span className="text-green-400">Stable</span></div>
+              </div>
+            </div>
           </aside>
           
           <div className="flex-1 min-w-0">
             <${Routes}>
               <${Route} path="/" element=${html`
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-8 pb-32">
+                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8 pb-32">
                   ${filtered.map(game => html`
                     <${Link} key=${game.id} to="/game/${game.id}" className="glass-panel rounded-[3rem] overflow-hidden group border border-white/5 flex flex-col hover:border-indigo-500/40 transition-all hover:-translate-y-2">
                       <div className="aspect-[16/10] relative overflow-hidden bg-slate-900">
@@ -213,13 +249,16 @@ const App = () => {
                       </div>
                     <//>
                   `)}
-                  ${filtered.length === 0 && html`<div className="col-span-full py-40 text-center opacity-30 font-orbitron text-xs uppercase tracking-[1em]">NO_UNITS_FOUND</div>`}
+                  ${filtered.length === 0 && html`
+                    <div className="col-span-full py-40 text-center opacity-30 font-orbitron text-xs uppercase tracking-[1em]">NO_UNITS_FOUND</div>
+                  `}
                 </div>
               `} />
               <${Route} path="/game/:id" element=${html`<${GameView} games=${GAMES} />`} />
             <//>
           </div>
         </main>
+        
         <${ARES_HUD} />
       </div>
     <//>

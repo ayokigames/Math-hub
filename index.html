@@ -88,7 +88,7 @@
 }
 </script>
     <script>
-        // FAIL-SAFE DISMISSAL: If React hangs for more than 4 seconds, force the app to show
+        // FAIL-SAFE DISMISSAL
         window.dismissLoader = function() {
             var loader = document.getElementById('emergency-loader');
             if (loader) {
@@ -96,7 +96,8 @@
                 setTimeout(function() { loader.style.visibility = 'hidden'; }, 600);
             }
         };
-        setTimeout(window.dismissLoader, 4000);
+        // If app hasn't loaded in 3 seconds, show what we have
+        setTimeout(window.dismissLoader, 3000);
         window.onerror = window.dismissLoader;
     </script>
 </head>
