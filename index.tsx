@@ -5,7 +5,7 @@ import App from './App.tsx';
 
 const html = htm.bind(React.createElement);
 
-console.log("System Initializing: Command V8 (React 18 Stable)");
+console.log("Kernel: Math Hub V9 (React 18.3.1 Stable)");
 
 const mount = () => {
   const rootElement = document.getElementById('root');
@@ -21,13 +21,15 @@ const mount = () => {
       `
     );
     
-    // Auto-dismiss the loader after React takes over
+    // Auto-dismiss the loader after React takes control
     setTimeout(() => {
-        if (window['dismissLoader']) window['dismissLoader']();
+        if (typeof window['dismissLoader'] === 'function') {
+            window['dismissLoader']();
+        }
     }, 500);
   } catch (err) {
-    console.error("Critical Render Failure:", err);
-    if (window['dismissLoader']) window['dismissLoader']();
+    console.error("Mounting Error:", err);
+    // If we fail here, the Force Launch button in HTML still works.
   }
 };
 

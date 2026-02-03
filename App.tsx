@@ -1,7 +1,7 @@
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { HashRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { 
-  Search, Sigma, Target, Zap, Play, ArrowLeft, Maximize, 
+  Search, Sigma, Zap, ArrowLeft, Maximize, 
   Bot, Send, Cpu, Ghost, X, Shield, Terminal
 } from 'lucide-react';
 import htm from 'htm';
@@ -78,7 +78,7 @@ const GAMES = [
 const ARES_HUD = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState('');
-  const [messages, setMessages] = useState([{ role: 'ai', text: 'ARES-1 Tactical Link established.' }]);
+  const [messages, setMessages] = useState([{ role: 'ai', text: 'ARES-1 Operational. Strategic link ready.' }]);
   const [loading, setLoading] = useState(false);
   const scrollRef = useRef(null);
 
@@ -100,12 +100,12 @@ const ARES_HUD = () => {
         model: 'gemini-3-flash-preview',
         contents: userMsg,
         config: {
-          systemInstruction: 'You are ARES-1, a tactical assistant for Math Hub. Tone: Brief, cybernetic, helpful.'
+          systemInstruction: 'You are ARES-1, a tactical assistant for Math Hub. Be brief, cybernetic, and helpful.'
         }
       });
       setMessages(prev => [...prev, { role: 'ai', text: response.text || 'SIGNAL_LOST' }]);
     } catch (err) {
-      setMessages(prev => [...prev, { role: 'ai', text: 'LINK_FAILURE: RETRY' }]);
+      setMessages(prev => [...prev, { role: 'ai', text: 'UPLINK_FAILURE' }]);
     } finally {
       setLoading(false);
     }
@@ -118,22 +118,22 @@ const ARES_HUD = () => {
           <${Bot} className="w-6 h-6 text-white" />
         </button>
       ` : html`
-        <div className="w-full h-full glass-panel rounded-3xl overflow-hidden flex flex-col border border-indigo-500/30 shadow-2xl bg-slate-900">
+        <div className="w-full h-full bg-slate-900/95 backdrop-blur-xl rounded-3xl overflow-hidden flex flex-col border border-indigo-500/30 shadow-2xl">
           <div className="p-4 bg-indigo-600/20 border-b border-indigo-500/10 flex items-center justify-between">
             <span className="font-orbitron text-[10px] font-black uppercase tracking-widest text-indigo-100">ARES-1 HUD</span>
             <button onClick=${() => setIsOpen(false)} className="p-1 hover:bg-white/10 rounded-lg text-slate-400"><${X} className="w-4 h-4" /></button>
           </div>
-          <div ref=${scrollRef} className="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-950/40 font-mono text-[10px]">
+          <div ref=${scrollRef} className="flex-1 overflow-y-auto p-4 space-y-4 font-mono text-[10px] scrollbar-hide">
             ${messages.map((m, i) => html`
               <div key=${i} className=${`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                <div className=${`max-w-[85%] p-3 rounded-2xl ${m.role === 'user' ? 'bg-indigo-600 text-white' : 'bg-slate-900 border border-white/5 text-indigo-300'}`}>
+                <div className=${`max-w-[85%] p-3 rounded-2xl ${m.role === 'user' ? 'bg-indigo-600 text-white' : 'bg-slate-800 border border-white/5 text-indigo-300'}`}>
                   ${m.text}
                 </div>
               </div>
             `)}
           </div>
           <form onSubmit=${handleSend} className="p-3 bg-slate-900/80 border-t border-white/5 flex gap-2">
-            <input type="text" value=${input} onInput=${(e) => setInput(e.target.value)} placeholder="Query protocol..." className="flex-1 bg-black/50 border border-white/10 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:border-indigo-500" />
+            <input type="text" value=${input} onInput=${(e) => setInput(e.target.value)} placeholder="Query ARES..." className="flex-1 bg-black/50 border border-white/10 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:border-indigo-500" />
             <button type="submit" className="p-2 bg-indigo-600 rounded-xl text-white"><${Send} className="w-4 h-4" /></button>
           </form>
         </div>
@@ -145,12 +145,12 @@ const ARES_HUD = () => {
 const App = () => {
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('all');
-  const [cloak, setCloak] = useState(() => localStorage.getItem('mh_cloak_v8') === 'true');
+  const [cloak, setCloak] = useState(() => localStorage.getItem('mh_cloak_v9') === 'true');
 
   useEffect(() => {
-    localStorage.setItem('mh_cloak_v8', cloak.toString());
+    localStorage.setItem('mh_cloak_v9', cloak.toString());
     document.title = cloak ? "about:blank" : "Math Hub | Tactical Command";
-    const handlePanic = (e) => { if (e.key === 'Escape') window.location.replace("https://google.com"); };
+    const handlePanic = (e: KeyboardEvent) => { if (e.key === 'Escape') window.location.replace("https://google.com"); };
     window.addEventListener('keydown', handlePanic);
     return () => window.removeEventListener('keydown', handlePanic);
   }, [cloak]);
@@ -165,22 +165,21 @@ const App = () => {
 
   return html`
     <${Router}>
-      <div className="min-h-screen bg-[#020617] text-slate-200 flex flex-col font-inter">
+      <div className="min-h-screen bg-[#020617] text-slate-200 flex flex-col font-inter selection:bg-indigo-600/40">
         <nav className="sticky top-0 z-50 bg-slate-900/80 backdrop-blur-xl border-b border-white/10 px-8 py-5">
           <div className="max-w-[1600px] mx-auto flex items-center justify-between gap-12">
             <${Link} to="/" className="flex items-center gap-4 shrink-0 group">
-              <div className="bg-indigo-600 p-2.5 rounded-xl shadow-lg group-hover:scale-110 transition-transform"><${Sigma} className="w-6 h-6 text-white" /></div>
-              <span className="font-orbitron text-2xl font-black text-white uppercase hidden sm:block">MATH HUB</span>
+              <div className="bg-indigo-600 p-2.5 rounded-xl shadow-lg transition-transform group-hover:scale-110"><${Sigma} className="w-6 h-6 text-white" /></div>
+              <span className="font-orbitron text-2xl font-black text-white uppercase hidden sm:block tracking-tighter">MATH HUB</span>
             <//>
             
             <div className="flex-1 max-w-xl relative">
-              <${Search} className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-600" />
               <input 
                 type="text" 
                 placeholder="Scan tactical modules..." 
                 value=${search} 
                 onInput=${(e) => setSearch(e.target.value)} 
-                className="w-full bg-slate-900 border border-white/10 rounded-xl py-3 pl-12 pr-4 text-xs text-white focus:outline-none focus:border-indigo-500 font-mono transition-all" 
+                className="w-full bg-slate-950 border border-white/10 rounded-xl py-3 px-6 text-xs text-white focus:outline-none focus:border-indigo-500 font-mono transition-all" 
               />
             </div>
             
@@ -245,17 +244,17 @@ const GameView = ({ games }) => {
 
   useEffect(() => { window.scrollTo(0, 0); }, [gameId]);
 
-  if (!game) return html`<div className="py-40 text-center font-orbitron opacity-40 uppercase tracking-[1em]">ERROR: VOID_MODULE</div>`;
+  if (!game) return html`<div className="py-40 text-center font-orbitron opacity-40 uppercase tracking-[1em]">ERROR: VOID</div>`;
 
   return html`
     <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-32">
       <div className="flex items-center justify-between">
         <${Link} to="/" className="inline-flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 hover:text-white transition-all bg-white/5 px-8 py-3 rounded-full border border-white/5">
-          <${ArrowLeft} className="w-4 h-4" /> Return to Hub
+          <${ArrowLeft} className="w-4 h-4" /> extraction protocol
         <//>
       </div>
       
-      <div className="relative aspect-video w-full bg-black rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl group ring-1 ring-indigo-500/10">
+      <div className="relative aspect-video w-full bg-black rounded-[3rem] overflow-hidden border border-white/10 shadow-2xl group">
         <iframe 
           src="${game.url}" 
           className="w-full h-full border-0" 
@@ -263,7 +262,7 @@ const GameView = ({ games }) => {
           sandbox="allow-forms allow-modals allow-orientation-lock allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-presentation allow-scripts allow-same-origin allow-storage-access-by-user-activation"
           ref=${iframeRef} 
         />
-        <button onClick=${() => iframeRef.current?.requestFullscreen()} className="absolute bottom-10 right-10 p-3.5 bg-black/60 backdrop-blur-3xl border border-white/10 text-white rounded-xl opacity-0 group-hover:opacity-100 hover:bg-indigo-600 transition-all shadow-2xl">
+        <button onClick=${() => iframeRef.current?.requestFullscreen()} className="absolute bottom-10 right-10 p-3.5 bg-black/60 backdrop-blur-3xl border border-white/10 text-white rounded-xl opacity-0 group-hover:opacity-100 hover:bg-indigo-600 transition-all">
           <${Maximize} className="w-5 h-5" />
         </button>
       </div>

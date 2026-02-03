@@ -7,7 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Orbitron:wght@400;900&family=JetBrains+Mono&display=swap" rel="stylesheet">
     <style>
-        body { background: #020617; color: #f8fafc; margin: 0; overflow-x: hidden; }
+        body { background: #020617; color: #f8fafc; margin: 0; overflow: hidden; height: 100vh; width: 100vw; }
         .font-orbitron { font-family: 'Orbitron', sans-serif; }
         
         #emergency-loader {
@@ -17,10 +17,9 @@
             align-items: center;
             justify-content: center;
             background: #020617;
-            z-index: 99999;
+            z-index: 999999;
             flex-direction: column;
             gap: 1.5rem;
-            transition: opacity 0.5s ease;
         }
         
         .loader-ring {
@@ -35,43 +34,37 @@
         @keyframes spin { to { transform: rotate(360deg); } }
 
         .bypass-btn {
-            padding: 14px 28px;
+            padding: 16px 32px;
             background: #6366f1;
-            border: none;
-            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 14px;
             color: white;
             font-size: 11px;
             cursor: pointer;
             font-family: 'Orbitron', sans-serif;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             font-weight: 900;
-            box-shadow: 0 10px 20px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.4);
+            transition: all 0.2s;
         }
+        
+        .bypass-btn:active { transform: scale(0.95); }
     </style>
     <script>
-        // Set environment immediately
+        // Set environment immediately to prevent SDK crashes
         window.process = { env: { API_KEY: "" } };
         
         window.dismissLoader = function() {
-            console.log("BOOST: Force clearing loader...");
+            console.log("EXEC: NUCLEAR_BYPASS triggered.");
             const loader = document.getElementById('emergency-loader');
             if (loader) {
-                loader.style.opacity = '0';
-                setTimeout(() => {
-                    if (loader.parentNode) loader.parentNode.removeChild(loader);
-                }, 500);
+                loader.remove(); // Physically remove from DOM
             }
         };
 
-        // Fallback for extreme cases
-        setTimeout(() => {
-            const loader = document.getElementById('emergency-loader');
-            if (loader) {
-                console.warn("System hung. Auto-bypass triggered.");
-                window.dismissLoader();
-            }
-        }, 8000);
+        // Fallback for extreme cases (8 seconds)
+        setTimeout(window.dismissLoader, 8000);
     </script>
     <script type="importmap">
 {
@@ -91,9 +84,9 @@
 <body>
     <div id="emergency-loader">
         <div class="loader-ring"></div>
-        <div class="font-orbitron" style="font-size: 10px; color: #6366f1; letter-spacing: 5px; font-weight: 900;">STABLE_BOOT_V8</div>
+        <div class="font-orbitron" style="font-size: 10px; color: #6366f1; letter-spacing: 5px; font-weight: 900;">STABLE_BOOT_V9</div>
         <button class="bypass-btn" onclick="window.dismissLoader()">Force Launch Engine</button>
-        <p style="font-size: 10px; color: #475569; font-family: 'JetBrains Mono'; margin-top: 10px;">If the screen is black after clicking, refresh.</p>
+        <p style="font-size: 10px; color: #475569; font-family: 'JetBrains Mono'; margin-top: 10px; opacity: 0.6;">(Click to manually clear overlay)</p>
     </div>
     <div id="root"></div>
     <script type="module" src="./index.tsx"></script>
