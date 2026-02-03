@@ -5,16 +5,19 @@ import App from './App.tsx';
 
 const html = htm.bind(React.createElement);
 
-// Ensure process.env is synced
-if (typeof window['process'] === 'undefined') {
-  window['process'] = { env: { API_KEY: window['_env_']?.API_KEY || '' } };
+// Sync local environment
+if (window['_env_'] && window['process']) {
+  window['process'].env.API_KEY = window['_env_'].API_KEY || '';
 }
 
-console.log("System Status: COMMAND_V6_ACTIVE");
+console.log("Kernel: V7_RECOVERY_PROTOCOL_READY");
 
 const mount = () => {
   const rootElement = document.getElementById('root');
-  if (!rootElement) return;
+  if (!rootElement) {
+    console.error("DOM_ERROR: Root not found");
+    return;
+  }
 
   try {
     const root = ReactDOM.createRoot(rootElement);
@@ -28,23 +31,15 @@ const mount = () => {
     
     // Auto-dismiss the loader overlay on successful render
     if (window['dismissLoader']) {
-      setTimeout(() => window['dismissLoader'](), 400);
+      setTimeout(() => window['dismissLoader'](), 300);
     }
   } catch (err) {
-    console.error("Critical System Hang detected:", err);
-    // Attempt emergency UI recovery
-    rootElement.innerHTML = `
-      <div style="padding: 100px; text-align: center; color: white; font-family: 'Orbitron', sans-serif;">
-        <h1 style="color: #6366f1;">REBOOT_REQUIRED</h1>
-        <p style="opacity: 0.5; font-size: 11px; margin-top: 10px;">KERNEL_ERROR: VERSION_MISMATCH_RECOVERED</p>
-        <button onclick="location.reload()" style="margin-top: 30px; padding: 15px 30px; background: #6366f1; border: none; border-radius: 8px; color: white; cursor: pointer; font-family: 'Orbitron'; text-transform: uppercase; font-weight: 900;">Restart Protocol</button>
-      </div>
-    `;
+    console.error("BOOT_EXCEPTION:", err);
     if (window['dismissLoader']) window['dismissLoader']();
   }
 };
 
-// Fire boot protocol
+// Fire boot sequence
 if (document.readyState === 'complete' || document.readyState === 'interactive') {
   mount();
 } else {
