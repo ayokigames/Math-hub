@@ -57,7 +57,6 @@
             z-index: 10000;
             flex-direction: column;
             gap: 1.5rem;
-            transition: opacity 0.4s ease;
         }
         
         .loader-ring {
@@ -76,10 +75,10 @@
         .bypass-btn {
             margin-top: 20px;
             padding: 12px 24px;
-            background: rgba(99, 102, 241, 0.1);
-            border: 1px solid rgba(99, 102, 241, 0.4);
+            background: #6366f1;
+            border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 12px;
-            color: #6366f1;
+            color: white;
             font-size: 11px;
             cursor: pointer;
             font-family: 'Orbitron', sans-serif;
@@ -87,14 +86,35 @@
             letter-spacing: 2px;
             transition: all 0.2s;
             z-index: 10001;
+            font-weight: 900;
         }
         
         .bypass-btn:hover {
-            background: rgba(99, 102, 241, 0.25);
+            background: #4f46e5;
             transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(99, 102, 241, 0.2);
+            box-shadow: 0 0 30px rgba(99, 102, 241, 0.4);
         }
     </style>
+    <script>
+        // CRITICAL: Polyfill process.env BEFORE any modules load
+        window.process = window.process || { env: { API_KEY: "" } };
+        window._env_ = window._env_ || { API_KEY: "" };
+        
+        window.dismissLoader = function() {
+            console.log("EXEC_DISMISS: Clearing UI block...");
+            const loader = document.getElementById('emergency-loader');
+            if (loader) {
+                loader.style.opacity = '0';
+                loader.style.pointerEvents = 'none';
+                setTimeout(() => { 
+                    if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
+                }, 300);
+            }
+        };
+
+        // Fallback: If everything hangs, clear the loader after 6 seconds
+        setTimeout(window.dismissLoader, 6000);
+    </script>
     <script type="importmap">
 {
   "imports": {
@@ -109,30 +129,14 @@
   }
 }
 </script>
-    <script>
-        window.dismissLoader = function() {
-            const loader = document.getElementById('emergency-loader');
-            if (loader) {
-                console.log("Removing Loader...");
-                loader.style.opacity = '0';
-                loader.style.pointerEvents = 'none';
-                setTimeout(() => { 
-                    if (loader.parentNode) loader.parentNode.removeChild(loader);
-                }, 400);
-            }
-        };
-        // Global error handler
-        window.onerror = function() { window.dismissLoader(); };
-        // Force dismiss after 8 seconds regardless
-        setTimeout(window.dismissLoader, 8000);
-    </script>
 </head>
 <body>
     <div class="hud-scanline"></div>
     <div id="emergency-loader">
         <div class="loader-ring"></div>
-        <div style="font-family: 'Orbitron', sans-serif; font-size: 10px; color: #6366f1; letter-spacing: 5px; font-weight: 900; opacity: 0.8;">BOOTING_PROTOCOL_V5</div>
+        <div style="font-family: 'Orbitron', sans-serif; font-size: 10px; color: #6366f1; letter-spacing: 5px; font-weight: 900; opacity: 0.8;">CORE_INIT_V6</div>
         <button class="bypass-btn" onclick="window.dismissLoader()">Force Launch Engine</button>
+        <p style="font-size: 9px; color: #475569; font-family: 'JetBrains Mono'; margin-top: 10px;">If stuck, use Force Launch</p>
     </div>
     <div id="root"></div>
     <script type="module" src="./index.tsx"></script>

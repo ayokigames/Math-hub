@@ -5,16 +5,12 @@ import App from './App.tsx';
 
 const html = htm.bind(React.createElement);
 
-console.log("System Initializing: Command V5");
-
-// Ensure process.env is polyfilled at the root level
+// Ensure process.env is synced
 if (typeof window['process'] === 'undefined') {
-  window['process'] = { 
-    env: { 
-      API_KEY: window['_env_']?.API_KEY || '' 
-    } 
-  };
+  window['process'] = { env: { API_KEY: window['_env_']?.API_KEY || '' } };
 }
+
+console.log("System Status: COMMAND_V6_ACTIVE");
 
 const mount = () => {
   const rootElement = document.getElementById('root');
@@ -30,26 +26,27 @@ const mount = () => {
       `
     );
     
-    // Hide loader if React succeeds
+    // Auto-dismiss the loader overlay on successful render
     if (window['dismissLoader']) {
-      setTimeout(() => window['dismissLoader'](), 500);
+      setTimeout(() => window['dismissLoader'](), 400);
     }
   } catch (err) {
-    console.error("Critical Render Failure:", err);
+    console.error("Critical System Hang detected:", err);
+    // Attempt emergency UI recovery
     rootElement.innerHTML = `
       <div style="padding: 100px; text-align: center; color: white; font-family: 'Orbitron', sans-serif;">
-        <h1 style="color: #6366f1;">BOOT_ERROR</h1>
-        <p style="opacity: 0.5; font-size: 12px; margin-top: 20px;">CRITICAL SYSTEM FAULT: CHECK CONSOLE</p>
-        <button onclick="location.reload()" style="margin-top: 20px; padding: 12px 24px; background: #6366f1; border: none; border-radius: 8px; color: white; cursor: pointer; font-family: 'Orbitron'; text-transform: uppercase;">REBOOT_SYSTEM</button>
+        <h1 style="color: #6366f1;">REBOOT_REQUIRED</h1>
+        <p style="opacity: 0.5; font-size: 11px; margin-top: 10px;">KERNEL_ERROR: VERSION_MISMATCH_RECOVERED</p>
+        <button onclick="location.reload()" style="margin-top: 30px; padding: 15px 30px; background: #6366f1; border: none; border-radius: 8px; color: white; cursor: pointer; font-family: 'Orbitron'; text-transform: uppercase; font-weight: 900;">Restart Protocol</button>
       </div>
     `;
     if (window['dismissLoader']) window['dismissLoader']();
   }
 };
 
-// Fire when DOM is ready
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', mount);
-} else {
+// Fire boot protocol
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
   mount();
+} else {
+  document.addEventListener('DOMContentLoaded', mount);
 }
