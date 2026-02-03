@@ -20,28 +20,30 @@ const startEngine = () => {
       `
     );
     
-    // Once React has started its render cycle, wait a beat and clear the loader
-    // Using requestAnimationFrame to ensure we are in a paint cycle
+    // Handshake: Dismiss loader once React takes control
+    const dismiss = () => {
+      if (typeof (window as any).__RECOVERY_BYPASS__ === 'function') {
+        (window as any).__RECOVERY_BYPASS__();
+      }
+    };
+
+    // Use requestAnimationFrame to ensure we reveal after the first paint
     requestAnimationFrame(() => {
-        setTimeout(() => {
-            if (typeof (window as any).dismissLoader === 'function') {
-                (window as any).dismissLoader();
-            }
-        }, 100);
+        setTimeout(dismiss, 200);
     });
     
   } catch (err) {
     console.error("Critical Kernel Panic during mount:", err);
-    // Even if it fails, reveal the DOM so the user sees the error container
-    if (typeof (window as any).dismissLoader === 'function') {
-        (window as any).dismissLoader();
+    // Force reveal so user can see at least the partial DOM or error state
+    if (typeof (window as any).__RECOVERY_BYPASS__ === 'function') {
+        (window as any).__RECOVERY_BYPASS__();
     }
   }
 };
 
-// Execute boot protocol
-if (document.readyState === 'complete' || document.readyState === 'interactive') {
-    startEngine();
+// Start initialization sequence
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', startEngine);
 } else {
-    window.addEventListener('load', startEngine);
+    startEngine();
 }

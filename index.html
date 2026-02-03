@@ -59,33 +59,31 @@
         .bypass-btn:active { transform: translateY(0) scale(0.96) !important; }
     </style>
     <script>
-        // CRITICAL: Initialize global env
+        // EMERGENCY BOOTSTRAP - Runs before any module scripts
         window.process = { env: { API_KEY: "" } };
         
-        // This function MUST be available immediately for the onclick handler
-        window.dismissLoader = function() {
-            console.log("RECOVERY: Executing UI reveal protocol.");
+        // This function is defined globally to be independent of the module system
+        window.__RECOVERY_BYPASS__ = function() {
+            console.log("RECOVERY_PROTOCOL_INITIATED");
             var loader = document.getElementById('emergency-loader');
             if (loader) {
                 loader.style.opacity = '0';
                 loader.style.visibility = 'hidden';
-                // Physical removal after fade
                 setTimeout(function() {
-                    if (loader.parentNode) loader.parentNode.removeChild(loader);
-                }, 400);
+                    if (loader && loader.parentNode) loader.parentNode.removeChild(loader);
+                }, 500);
             }
-            // Restore scroll/body state
             document.body.style.overflow = 'auto';
             document.body.style.height = 'auto';
             document.body.style.width = 'auto';
             return false;
         };
 
-        // Watchdog: Reveal site automatically after 3 seconds in case of module hang
+        // Watchdog: Automatic reveal after 3 seconds to guarantee site access
         setTimeout(function() {
             if (document.getElementById('emergency-loader')) {
-                console.warn("Watchdog: Engine synchronization delayed. Forcing reveal.");
-                window.dismissLoader();
+                console.warn("Watchdog: Module hang detected. Forcing UI reveal.");
+                window.__RECOVERY_BYPASS__();
             }
         }, 3000);
     </script>
@@ -107,9 +105,9 @@
 <body>
     <div id="emergency-loader">
         <div class="loader-ring"></div>
-        <div class="font-orbitron" style="font-size: 10px; color: #6366f1; letter-spacing: 5px; font-weight: 900; text-align: center;">BOOT_V20_STABLE</div>
-        <button class="bypass-btn" onclick="window.dismissLoader(); return false;">Force Launch Engine</button>
-        <p style="font-size: 9px; color: #475569; font-family: 'JetBrains Mono'; opacity: 0.5; text-align: center; max-width: 250px; line-height: 1.6; margin-top: -10px;">GITHUB PAGES COMPATIBILITY: ON</p>
+        <div class="font-orbitron" style="font-size: 10px; color: #6366f1; letter-spacing: 5px; font-weight: 900; text-align: center;">BOOT_V21_MASTER</div>
+        <button class="bypass-btn" onclick="window.__RECOVERY_BYPASS__();">Force Launch Engine</button>
+        <p style="font-size: 9px; color: #475569; font-family: 'JetBrains Mono'; opacity: 0.5; text-align: center; max-width: 250px; line-height: 1.6; margin-top: -10px;">ULTRA-PRIMITIVE RECOVERY ACTIVE</p>
     </div>
     <div id="root"></div>
     <script type="module" src="./index.tsx"></script>
