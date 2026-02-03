@@ -6,7 +6,6 @@ import App from './App.tsx';
 const html = htm.bind(React.createElement);
 
 const startEngine = () => {
-  console.log("Kernel: Initializing Hub V27...");
   const rootElement = document.getElementById('root');
   if (!rootElement) return;
 
@@ -28,7 +27,7 @@ const startEngine = () => {
     
     // Attempt to dismiss after a tiny delay for React to mount its first frame
     requestAnimationFrame(() => {
-      setTimeout(dismiss, 150);
+      setTimeout(dismiss, 100);
     });
     
   } catch (error) {
@@ -37,7 +36,6 @@ const startEngine = () => {
   }
 };
 
-// Start boot sequence
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', startEngine);
 } else {

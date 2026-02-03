@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { HashRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { 
   Search, Sigma, Zap, ArrowLeft, Maximize, 
-  Bot, Send, Ghost, X, Shield, Play
+  Bot, Send, Ghost, X, Shield, Play, Terminal
 } from 'lucide-react';
 import htm from 'htm';
 import { GoogleGenAI } from "@google/genai";
@@ -101,12 +101,12 @@ const ARES_HUD = () => {
         model: 'gemini-3-flash-preview',
         contents: userMsg,
         config: {
-          systemInstruction: 'You are ARES-1, a tactical assistant for Math Hub. You are a gaming expert. Keep it cyber-themed and helpful.'
+          systemInstruction: 'You are ARES-1, a tactical gaming assistant for Math Hub. You provide gaming tips, strategy advice, and helpful information. Keep your tone professional, cyber-themed, and concise.'
         }
       });
-      setMessages(prev => [...prev, { role: 'ai', text: response.text || 'ERROR: Uplink interrupted.' }]);
+      setMessages(prev => [...prev, { role: 'ai', text: response.text || 'Uplink failure.' }]);
     } catch (err) {
-      setMessages(prev => [...prev, { role: 'ai', text: 'CRITICAL_FAILURE: Network timeout.' }]);
+      setMessages(prev => [...prev, { role: 'ai', text: 'Critical Error: Connection lost.' }]);
     } finally {
       setLoading(false);
     }
@@ -115,7 +115,7 @@ const ARES_HUD = () => {
   return html`
     <div className=${`fixed bottom-8 right-8 z-[100] transition-all duration-500 ${isOpen ? 'w-[320px] h-[450px]' : 'w-14 h-14'}`}>
       ${!isOpen ? html`
-        <button onClick=${() => setIsOpen(true)} className="w-full h-full bg-indigo-600 rounded-2xl flex items-center justify-center shadow-2xl border border-indigo-400/50 hover:scale-110 active:scale-95 transition-all">
+        <button onClick=${() => setIsOpen(true)} className="w-full h-full bg-indigo-600 rounded-2xl flex items-center justify-center shadow-2xl border border-indigo-400/50 hover:scale-110 transition-all">
           <${Bot} className="w-6 h-6 text-white" />
         </button>
       ` : html`
@@ -132,6 +132,7 @@ const ARES_HUD = () => {
                 </div>
               </div>
             `)}
+            ${loading && html`<div className="text-indigo-500 animate-pulse text-[8px]">ANALYZING...</div>`}
           </div>
           <form onSubmit=${handleSend} className="p-3 bg-slate-900/80 border-t border-white/5 flex gap-2">
             <input type="text" value=${input} onInput=${(e: any) => setInput(e.target.value)} placeholder="Query ARES..." className="flex-1 bg-black/50 border border-white/10 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:border-indigo-500" />
@@ -146,10 +147,10 @@ const ARES_HUD = () => {
 const App = () => {
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('all');
-  const [cloak, setCloak] = useState(() => localStorage.getItem('mh_cloak_v27') === 'true');
+  const [cloak, setCloak] = useState(() => localStorage.getItem('mh_cloak_v28') === 'true');
 
   useEffect(() => {
-    localStorage.setItem('mh_cloak_v27', cloak.toString());
+    localStorage.setItem('mh_cloak_v28', cloak.toString());
     document.title = cloak ? "about:blank" : "Math Hub | Tactical Command";
     const handlePanic = (e: KeyboardEvent) => { if (e.key === 'Escape') window.location.replace("https://google.com"); };
     window.addEventListener('keydown', handlePanic);

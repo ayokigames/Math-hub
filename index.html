@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Math Hub | Tactical Command</title>
     <script>
-        // GLOBAL EMERGENCY RECOVERY
+        // EMERGENCY BOOTSTRAP
         window.process = { env: { API_KEY: "" } };
         
         window.forceDismiss = function() {
-            console.log("RECOVERY_PROTOCOL_V27: Executing forced UI reveal.");
+            console.log("RECOVERY_PROTOCOL: Executing forced UI reveal.");
             var loader = document.getElementById('emergency-loader');
             if (loader) {
                 loader.style.opacity = '0';
@@ -22,20 +22,13 @@
             return false;
         };
 
-        // Watchdog: Automatic reveal as a last resort
+        // Watchdog: If site hasn't revealed in 2.5s, force it.
         setTimeout(function() {
             if (document.getElementById('emergency-loader')) {
-                console.warn("Watchdog: Module hang detected. Forcing site reveal.");
+                console.warn("Watchdog: Engine synchronization timeout. Auto-clearing.");
                 window.forceDismiss();
             }
         }, 2500);
-
-        // Global Error Listener
-        window.onerror = function(msg, url, line) {
-            console.error("Critical Failure:", msg, "at", url, ":", line);
-            // If we hit an error, reveal the root so at least the browser can try to render what's left
-            setTimeout(window.forceDismiss, 500);
-        };
     </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Orbitron:wght@400;900&family=JetBrains+Mono&display=swap" rel="stylesheet">
@@ -69,7 +62,6 @@
 
         .bypass-btn {
             appearance: none;
-            -webkit-appearance: none;
             background: #6366f1 !important;
             border: 2px solid rgba(255,255,255,0.2) !important;
             border-radius: 12px !important;
@@ -83,11 +75,9 @@
             font-weight: 900 !important;
             box-shadow: 0 10px 40px rgba(99, 102, 241, 0.4) !important;
             z-index: 2147483648 !important;
-            position: relative !important;
-            pointer-events: all !important;
         }
 
-        .bypass-btn:hover { background: #4f46e5 !important; transform: scale(1.05); }
+        .bypass-btn:hover { background: #4f46e5 !important; transform: scale(1.05); transition: 0.2s; }
     </style>
     <script type="importmap">
 {
@@ -107,11 +97,11 @@
 <body>
     <div id="emergency-loader">
         <div class="loader-ring"></div>
-        <div class="font-orbitron" style="font-size: 10px; color: #6366f1; letter-spacing: 5px; font-weight: 900;">BOOT_V27_ULTRA_STABLE</div>
+        <div class="font-orbitron" style="font-size: 10px; color: #6366f1; letter-spacing: 5px; font-weight: 900;">BOOT_V28_FINAL</div>
         <button class="bypass-btn" onclick="window.forceDismiss(); return false;">
             Force Launch Hub
         </button>
-        <p style="font-size: 9px; color: #475569; font-family: 'JetBrains Mono'; opacity: 0.5; text-align: center;">GITHUB PAGES FIX: VERSION CONFLICTS PURGED</p>
+        <p style="font-size: 9px; color: #475569; font-family: 'JetBrains Mono'; opacity: 0.5; text-align: center;">CONFLICT PURGE COMPLETE</p>
     </div>
     <div id="root"></div>
     <script type="module" src="./index.tsx"></script>
