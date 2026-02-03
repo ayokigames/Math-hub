@@ -16,10 +16,12 @@
             align-items: center !important;
             justify-content: center !important;
             background: #020617 !important;
-            z-index: 99999999 !important;
+            z-index: 2147483647 !important; /* Max z-index */
             flex-direction: column !important;
             gap: 2rem !important;
             pointer-events: all !important;
+            opacity: 1;
+            transition: opacity 0.5s ease;
         }
         
         .loader-ring {
@@ -35,18 +37,18 @@
 
         .bypass-btn {
             all: unset;
-            padding: 20px 40px !important;
+            padding: 18px 36px !important;
             background: #6366f1 !important;
             border: 2px solid rgba(255,255,255,0.2) !important;
-            border-radius: 16px !important;
+            border-radius: 14px !important;
             color: white !important;
-            font-size: 12px !important;
+            font-size: 11px !important;
             cursor: pointer !important;
             font-family: 'Orbitron', sans-serif !important;
             text-transform: uppercase !important;
             letter-spacing: 4px !important;
             font-weight: 900 !important;
-            box-shadow: 0 0 40px rgba(99, 102, 241, 0.4) !important;
+            box-shadow: 0 10px 40px rgba(99, 102, 241, 0.4) !important;
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
             text-align: center !important;
             display: block !important;
@@ -56,31 +58,31 @@
         .bypass-btn:active { transform: scale(0.95) !important; }
     </style>
     <script>
-        // GLOBAL ENVIRONMENT SETUP
+        // EMERGENCY BOOTSTRAP
         window.process = { env: { API_KEY: "" } };
         
-        // ISOLATED BYPASS LOGIC: Guaranteed to run even if modules crash
+        // This function is guaranteed to exist immediately
         window.dismissLoader = function() {
-            console.log("BYPASS_ACTIVE: Forcing loader removal.");
+            console.log("BYPASS_TRIGGERED: Forcing reveal.");
             var loader = document.getElementById('emergency-loader');
             if (loader) {
-                loader.style.display = 'none';
-                if (loader.parentNode) {
-                    loader.parentNode.removeChild(loader);
-                }
+                loader.style.opacity = '0';
+                setTimeout(function() {
+                    if (loader.parentNode) loader.parentNode.removeChild(loader);
+                }, 500);
             }
             document.body.style.overflow = 'auto';
             document.body.style.height = 'auto';
             document.body.style.width = 'auto';
         };
 
-        // AUTO-WATCHDOG: If no module loads within 8 seconds, clear the screen anyway
+        // Watchdog: Reveal site after 4 seconds regardless of script status
         setTimeout(function() {
             if (document.getElementById('emergency-loader')) {
-                console.warn("Watchdog: System hang detected. Executing emergency reveal.");
+                console.warn("Watchdog: System hang detected. Forcing UI reveal.");
                 window.dismissLoader();
             }
-        }, 8000);
+        }, 4000);
     </script>
     <script type="importmap">
 {
@@ -100,9 +102,9 @@
 <body>
     <div id="emergency-loader">
         <div class="loader-ring"></div>
-        <div class="font-orbitron" style="font-size: 12px; color: #6366f1; letter-spacing: 8px; font-weight: 900; text-align: center;">BOOT_V15_MASTER</div>
+        <div class="font-orbitron" style="font-size: 11px; color: #6366f1; letter-spacing: 6px; font-weight: 900; text-align: center;">BOOT_V16_STABLE</div>
         <button class="bypass-btn" onclick="window.dismissLoader()">Force Launch Engine</button>
-        <p style="font-size: 10px; color: #475569; font-family: 'JetBrains Mono'; opacity: 0.6; text-align: center; max-width: 250px;">MANUAL OVERRIDE: USE IF STUCK ON THIS SCREEN</p>
+        <p style="font-size: 9px; color: #475569; font-family: 'JetBrains Mono'; opacity: 0.5; text-align: center; max-width: 220px; line-height: 1.6;">IF LOADING HANGS, USE THE MANUAL OVERRIDE BUTTON ABOVE</p>
     </div>
     <div id="root"></div>
     <script type="module" src="./index.tsx"></script>

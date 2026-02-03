@@ -5,8 +5,7 @@ import App from './App.tsx';
 
 const html = htm.bind(React.createElement);
 
-const boot = () => {
-  console.log("Kernel: Initializing Tactical UI...");
+const mountApp = () => {
   const container = document.getElementById('root');
   if (!container) return;
 
@@ -20,19 +19,19 @@ const boot = () => {
       `
     );
     
-    // Handshake: Dismiss the loader once React has painted
+    // Attempt to dismiss loader once React starts its cycle
     setTimeout(() => {
       if (typeof (window as any).dismissLoader === 'function') {
         (window as any).dismissLoader();
       }
-    }, 500);
+    }, 400);
   } catch (err) {
-    console.error("Kernel Panic during mount:", err);
+    console.error("Mount Failure:", err);
   }
 };
 
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', boot);
+  document.addEventListener('DOMContentLoaded', mountApp);
 } else {
-  boot();
+  mountApp();
 }
