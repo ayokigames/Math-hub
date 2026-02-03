@@ -5,7 +5,7 @@ import App from './App.tsx';
 
 const html = htm.bind(React.createElement);
 
-const start = () => {
+const boot = () => {
   const container = document.getElementById('root');
   if (!container) return;
 
@@ -19,20 +19,23 @@ const start = () => {
       `
     );
     
-    // Attempt to dismiss loader once render is scheduled
+    // Immediate dismissal handshake
     if (typeof (window as any).forceDismiss === 'function') {
-      setTimeout((window as any).forceDismiss, 100);
+      // Delay slightly to allow the first paint of the app
+      setTimeout((window as any).forceDismiss, 150);
     }
   } catch (err) {
-    console.error("Mount Error:", err);
+    console.error("Critical Kernel Panic:", err);
+    // If React fails to render, we still want the user to see whatever is there
     if (typeof (window as any).forceDismiss === 'function') {
       (window as any).forceDismiss();
     }
   }
 };
 
-if (document.readyState === 'complete') {
-  start();
+// Start as soon as possible
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+  boot();
 } else {
-  window.addEventListener('load', start);
+  window.addEventListener('DOMContentLoaded', boot);
 }
