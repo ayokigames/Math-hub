@@ -5,16 +5,12 @@ import App from './App.tsx';
 
 const html = htm.bind(React.createElement);
 
-const start = () => {
-  console.log("Kernel: Initializing Hub...");
+const startEngine = () => {
+  console.log("Kernel: Initializing Hub V26...");
   const rootElement = document.getElementById('root');
-  if (!rootElement) {
-    console.error("Critical Error: Root element not found.");
-    return;
-  }
+  if (!rootElement) return;
 
-  // Define dismiss function for safety
-  const dismissLoader = () => {
+  const dismiss = () => {
     const loader = document.getElementById('emergency-loader');
     if (loader) {
       loader.style.display = 'none';
@@ -34,19 +30,19 @@ const start = () => {
       `
     );
     
-    // Handshake: Dismiss overlay after a short delay to allow first paint
-    setTimeout(dismissLoader, 200);
+    // Attempt to dismiss after a tiny delay for React to mount its first frame
+    requestAnimationFrame(() => {
+      setTimeout(dismiss, 100);
+    });
     
   } catch (error) {
-    console.error("Critical Mount Error:", error);
-    // If React fails to render, we still want the user to see the page state
-    dismissLoader();
+    console.error("Critical Kernel Error:", error);
+    dismiss();
   }
 };
 
-// Start boot sequence when ready
-if (document.readyState === 'complete' || document.readyState === 'interactive') {
-    start();
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', startEngine);
 } else {
-    window.addEventListener('DOMContentLoaded', start);
+    startEngine();
 }

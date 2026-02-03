@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { HashRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { 
   Search, Sigma, Zap, ArrowLeft, Maximize, 
-  Bot, Send, Cpu, Ghost, X, Shield, Terminal, Play
+  Bot, Send, Ghost, X, Shield, Play, Terminal
 } from 'lucide-react';
 import htm from 'htm';
 import { GoogleGenAI } from "@google/genai";
@@ -12,7 +12,7 @@ const html = htm.bind(React.createElement);
 const GameCategory = {
   ACTION: 'Action',
   STRATEGY: 'Strategy',
-  KINETIC: 'Kinetic',
+  PUZZLE: 'Puzzle',
   RETRO: 'Retro'
 };
 
@@ -29,7 +29,7 @@ const GAMES = [
     id: 'clusterrush',
     title: 'Cluster Rush',
     description: 'Kinetic platforming module. Master momentum across shifting logic sectors and obstacles.',
-    category: GameCategory.KINETIC,
+    category: GameCategory.ACTION,
     thumbnail: 'https://images.unsplash.com/photo-1590674899484-d5640e854abe?auto=format&fit=crop&q=80&w=600',
     url: 'https://genizymath.github.io/iframe/81.html'
   },
@@ -69,7 +69,7 @@ const GAMES = [
     id: 'cookie-clicker',
     title: 'Cookie Clicker',
     description: 'Infinite resource optimization. Scale production via massive algorithmic efficiency.',
-    category: GameCategory.RETRO,
+    category: GameCategory.STRATEGY,
     thumbnail: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&q=80&w=600',
     url: 'https://orteil.dashnet.org/cookieclicker/'
   }
@@ -95,7 +95,8 @@ const ARES_HUD = () => {
     setLoading(true);
 
     try {
-      const ai = new GoogleGenAI({ apiKey: (process.env as any).API_KEY || '' });
+      const apiKey = (window as any).process?.env?.API_KEY || '';
+      const ai = new GoogleGenAI({ apiKey });
       const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
         contents: userMsg,
@@ -145,10 +146,10 @@ const ARES_HUD = () => {
 const App = () => {
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('all');
-  const [cloak, setCloak] = useState(() => localStorage.getItem('mh_cloak_v15') === 'true');
+  const [cloak, setCloak] = useState(() => localStorage.getItem('mh_cloak_v26') === 'true');
 
   useEffect(() => {
-    localStorage.setItem('mh_cloak_v15', cloak.toString());
+    localStorage.setItem('mh_cloak_v26', cloak.toString());
     document.title = cloak ? "about:blank" : "Math Hub | Tactical Command";
     const handlePanic = (e: KeyboardEvent) => { if (e.key === 'Escape') window.location.replace("https://google.com"); };
     window.addEventListener('keydown', handlePanic);
