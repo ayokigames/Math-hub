@@ -5,7 +5,7 @@ import App from './App.tsx';
 
 const html = htm.bind(React.createElement);
 
-const boot = () => {
+const startEngine = () => {
   console.log("Kernel: Initializing Tactical Command Hub...");
   const container = document.getElementById('root');
   if (!container) return;
@@ -20,30 +20,28 @@ const boot = () => {
       `
     );
     
-    // Handshake: Let the loader know React has taken control
-    const triggerDismissal = () => {
-      if (typeof (window as any).dismissLoader === 'function') {
-        (window as any).dismissLoader();
-      }
-    };
-
-    // Fast reveal once mounting begins
+    // Once React has started its render cycle, wait a beat and clear the loader
+    // Using requestAnimationFrame to ensure we are in a paint cycle
     requestAnimationFrame(() => {
-        setTimeout(triggerDismissal, 400);
+        setTimeout(() => {
+            if (typeof (window as any).dismissLoader === 'function') {
+                (window as any).dismissLoader();
+            }
+        }, 100);
     });
     
   } catch (err) {
-    console.error("Mounting Failure:", err);
-    // Even if React fails, we show the screen so the user sees the 404/Error UI
+    console.error("Critical Kernel Panic during mount:", err);
+    // Even if it fails, reveal the DOM so the user sees the error container
     if (typeof (window as any).dismissLoader === 'function') {
         (window as any).dismissLoader();
     }
   }
 };
 
-// Start as soon as possible
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', boot);
+// Execute boot protocol
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    startEngine();
 } else {
-  boot();
+    window.addEventListener('load', startEngine);
 }
