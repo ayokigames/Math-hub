@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { HashRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { 
   Search, Sigma, Zap, ArrowLeft, Maximize, 
-  Bot, Send, Cpu, Ghost, X, Shield, Terminal
+  Bot, Send, Cpu, Ghost, X, Shield, Terminal, Play
 } from 'lucide-react';
 import htm from 'htm';
 import { GoogleGenAI } from "@google/genai";
@@ -78,7 +78,7 @@ const GAMES = [
 const ARES_HUD = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState('');
-  const [messages, setMessages] = useState([{ role: 'ai', text: 'ARES-1 Tactical Link established.' }]);
+  const [messages, setMessages] = useState([{ role: 'ai', text: 'ARES-1 System Online. How can I assist with your deployment?' }]);
   const [loading, setLoading] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
@@ -100,12 +100,12 @@ const ARES_HUD = () => {
         model: 'gemini-3-flash-preview',
         contents: userMsg,
         config: {
-          systemInstruction: 'You are ARES-1, a tactical assistant for Math Hub. Tone: Brief, cybernetic, helpful. You are unblocked game expert.'
+          systemInstruction: 'You are ARES-1, a tactical assistant for Math Hub. You help users navigate games and provide pro-tips. Tone: Cybernetic, direct, helpful.'
         }
       });
-      setMessages(prev => [...prev, { role: 'ai', text: response.text || 'SIGNAL_LOST' }]);
+      setMessages(prev => [...prev, { role: 'ai', text: response.text || 'ERROR: Uplink interrupted.' }]);
     } catch (err) {
-      setMessages(prev => [...prev, { role: 'ai', text: 'LINK_FAILURE: RETRY' }]);
+      setMessages(prev => [...prev, { role: 'ai', text: 'CRITICAL_FAILURE: Network timeout.' }]);
     } finally {
       setLoading(false);
     }
@@ -145,10 +145,10 @@ const ARES_HUD = () => {
 const App = () => {
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('all');
-  const [cloak, setCloak] = useState(() => localStorage.getItem('mh_cloak_v13') === 'true');
+  const [cloak, setCloak] = useState(() => localStorage.getItem('mh_cloak_v14') === 'true');
 
   useEffect(() => {
-    localStorage.setItem('mh_cloak_v13', cloak.toString());
+    localStorage.setItem('mh_cloak_v14', cloak.toString());
     document.title = cloak ? "about:blank" : "Math Hub | Tactical Command";
     const handlePanic = (e: KeyboardEvent) => { if (e.key === 'Escape') window.location.replace("https://google.com"); };
     window.addEventListener('keydown', handlePanic);
@@ -208,7 +208,7 @@ const App = () => {
             <div className="p-8 rounded-[2.5rem] border border-white/5 space-y-4 hidden lg:block opacity-60">
               <h4 className="text-[10px] font-black text-indigo-400 uppercase tracking-widest flex items-center gap-2"><${Cpu} className="w-4 h-4" /> Telemetry</h4>
               <div className="space-y-2 font-mono text-[9px] text-slate-500">
-                <div className="flex justify-between"><span>Kernel</span><span className="text-green-400">V13_STABLE</span></div>
+                <div className="flex justify-between"><span>Kernel</span><span className="text-green-400">V14_STABLE</span></div>
                 <div className="flex justify-between"><span>Status</span><span className="text-indigo-400">Online</span></div>
               </div>
             </div>
@@ -219,14 +219,19 @@ const App = () => {
               <${Route} path="/" element=${html`
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-8 pb-32">
                   ${filtered.map(game => html`
-                    <${Link} key=${game.id} to="/game/${game.id}" className="bg-slate-900 rounded-[2.5rem] overflow-hidden group border border-white/5 flex flex-col hover:border-indigo-500/40 transition-all hover:-translate-y-2">
-                      <div className="aspect-[16/10] relative overflow-hidden bg-slate-950">
+                    <${Link} key=${game.id} to="/game/${game.id}" className="bg-slate-900 rounded-[2.5rem] overflow-hidden group border border-white/5 flex flex-col hover:border-indigo-500/40 transition-all hover:-translate-y-2 h-full">
+                      <div className="aspect-[16/10] relative overflow-hidden bg-slate-950 shrink-0">
                         <img src="${game.thumbnail}" className="w-full h-full object-cover opacity-50 grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:opacity-100" />
                         <div className="absolute top-6 left-6 px-4 py-1.5 bg-black/80 rounded-full text-[9px] font-black text-indigo-400 uppercase tracking-widest border border-white/10 shadow-xl">${game.category}</div>
                       </div>
-                      <div className="p-8 space-y-3 flex-1">
-                        <h3 className="font-orbitron text-lg font-bold text-white uppercase group-hover:text-indigo-400 transition-colors">${game.title}</h3>
-                        <p className="text-[11px] text-slate-500 line-clamp-2 leading-relaxed font-medium">${game.description}</p>
+                      <div className="p-8 space-y-3 flex flex-col justify-between flex-1">
+                        <div>
+                          <h3 className="font-orbitron text-lg font-bold text-white uppercase group-hover:text-indigo-400 transition-colors">${game.title}</h3>
+                          <p className="text-[11px] text-slate-500 line-clamp-2 leading-relaxed font-medium mt-2">${game.description}</p>
+                        </div>
+                        <div className="flex items-center gap-2 text-indigo-500 text-[9px] font-black uppercase tracking-widest mt-4">
+                          <${Play} className="w-3 h-3" /> Initialize Module
+                        </div>
                       </div>
                     <//>
                   `)}
@@ -251,7 +256,7 @@ const GameView = ({ games }: { games: any[] }) => {
 
   useEffect(() => { window.scrollTo(0, 0); }, [gameId]);
 
-  if (!game) return html`<div className="py-40 text-center font-orbitron opacity-40 uppercase tracking-[1em]">ERROR: VOID</div>`;
+  if (!game) return html`<div className="py-40 text-center font-orbitron opacity-40 uppercase tracking-[1em]">ERROR: MODULE_VOID</div>`;
 
   return html`
     <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-700 pb-32">

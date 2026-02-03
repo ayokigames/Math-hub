@@ -7,8 +7,16 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Orbitron:wght@400;900&family=JetBrains+Mono&display=swap" rel="stylesheet">
     <style>
-        body { background: #020617; color: #f8fafc; margin: 0; overflow: hidden; height: 100vh; width: 100vw; }
-        .font-orbitron { font-family: 'Orbitron', sans-serif; }
+        /* Base styles to prevent white flash or scrolling issues during boot */
+        body { 
+            background: #020617; 
+            color: #f8fafc; 
+            margin: 0; 
+            overflow: hidden; 
+            height: 100vh; 
+            width: 100vw; 
+            font-family: 'Inter', sans-serif;
+        }
         
         #emergency-loader {
             position: fixed !important;
@@ -17,16 +25,15 @@
             align-items: center !important;
             justify-content: center !important;
             background: #020617 !important;
-            z-index: 99999999 !important; /* Maximum possible z-index */
+            z-index: 99999999 !important;
             flex-direction: column !important;
-            gap: 1.5rem !important;
-            opacity: 1;
+            gap: 2rem !important;
             pointer-events: all !important;
         }
         
         .loader-ring {
-            width: 60px;
-            height: 60px;
+            width: 80px;
+            height: 80px;
             border: 4px solid rgba(99, 102, 241, 0.1);
             border-top-color: #6366f1;
             border-radius: 50%;
@@ -36,57 +43,53 @@
         @keyframes spin { to { transform: rotate(360deg); } }
 
         .bypass-btn {
-            padding: 16px 32px !important;
+            all: unset;
+            padding: 20px 40px !important;
             background: #6366f1 !important;
-            border: 2px solid rgba(255,255,255,0.3) !important;
-            border-radius: 14px !important;
+            border: 2px solid rgba(255,255,255,0.2) !important;
+            border-radius: 16px !important;
             color: white !important;
-            font-size: 11px !important;
+            font-size: 12px !important;
             cursor: pointer !important;
             font-family: 'Orbitron', sans-serif !important;
             text-transform: uppercase !important;
-            letter-spacing: 3px !important;
+            letter-spacing: 4px !important;
             font-weight: 900 !important;
-            box-shadow: 0 10px 30px rgba(99, 102, 241, 0.5) !important;
-            transition: all 0.2s !important;
-            display: block !important;
-            visibility: visible !important;
-            opacity: 1 !important;
+            box-shadow: 0 0 40px rgba(99, 102, 241, 0.4) !important;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+            text-align: center !important;
         }
         
-        .bypass-btn:hover { background: #4f46e5 !important; transform: scale(1.05) !important; }
+        .bypass-btn:hover { background: #4f46e5 !important; transform: scale(1.05) !important; box-shadow: 0 0 60px rgba(99, 102, 241, 0.6) !important; }
         .bypass-btn:active { transform: scale(0.95) !important; }
     </style>
     <script>
-        // CRITICAL INITIALIZATION: Set environment immediately
+        // CRITICAL INITIALIZATION: Setup environment
         window.process = { env: { API_KEY: "" } };
         
+        // NUCLEAR BYPASS: This function is globally accessible and simple
         window.dismissLoader = function() {
-            console.log("KERNEL: NUCLEAR BYPASS TRIGGERED.");
+            console.log("BYPASS: Forcing loader removal and revealing engine.");
             var loader = document.getElementById('emergency-loader');
             if (loader) {
-                loader.style.setProperty('display', 'none', 'important');
+                loader.style.display = 'none';
                 if (loader.parentNode) {
                     loader.parentNode.removeChild(loader);
                 }
             }
-            // Ensure body can scroll if needed (though app is overflow-hidden)
+            // Force body to be interactive
             document.body.style.overflow = 'auto';
+            document.body.style.height = 'auto';
+            document.body.style.width = 'auto';
         };
 
-        // Fallback: If modules fail to load within 8 seconds, attempt auto-bypass
+        // AUTO-WATCHDOG: If everything fails, reveal page after 5 seconds
         setTimeout(function() {
             if (document.getElementById('emergency-loader')) {
-                console.warn("System watchdog triggered: auto-bypassing loader.");
+                console.warn("WATCHDOG: Auto-clearing frozen loader.");
                 window.dismissLoader();
             }
-        }, 8000);
-
-        // Global Error Watchdog
-        window.onerror = function(msg, url, lineNo, columnNo, error) {
-            console.error("GLOBAL_PANIC:", msg, "at", url, ":", lineNo);
-            return false;
-        };
+        }, 5000);
     </script>
     <script type="importmap">
 {
@@ -106,9 +109,9 @@
 <body>
     <div id="emergency-loader">
         <div class="loader-ring"></div>
-        <div class="font-orbitron" style="font-size: 10px; color: #6366f1; letter-spacing: 5px; font-weight: 900;">STABLE_BOOT_V13</div>
-        <button class="bypass-btn" id="bypass-trigger" onclick="window.dismissLoader()">Force Launch Engine</button>
-        <p style="font-size: 10px; color: #475569; font-family: 'JetBrains Mono'; margin-top: 10px; opacity: 0.6; text-align: center;">(PHYSICAL REMOVAL BYPASS)</p>
+        <div class="font-orbitron" style="font-size: 12px; color: #6366f1; letter-spacing: 8px; font-weight: 900; text-align: center;">BOOT_V14_STABLE</div>
+        <button class="bypass-btn" onclick="window.dismissLoader()">Force Launch Engine</button>
+        <p style="font-size: 10px; color: #475569; font-family: 'JetBrains Mono'; opacity: 0.6; text-align: center; max-width: 250px;">MANUAL OVERRIDE: USE IF SCREEN STAYS BLACK FOR > 3 SECONDS</p>
     </div>
     <div id="root"></div>
     <script type="module" src="./index.tsx"></script>
