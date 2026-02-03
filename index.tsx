@@ -6,7 +6,7 @@ import App from './App.tsx';
 const html = htm.bind(React.createElement);
 
 const startEngine = () => {
-  console.log("Kernel: Initializing Hub V29 Engine...");
+  console.log("Kernel: Initializing Hub V30 Engine...");
   const rootElement = document.getElementById('root');
   if (!rootElement) return;
 
@@ -26,8 +26,8 @@ const startEngine = () => {
       `
     );
     
-    // Automatically reveal the UI after React takes control
-    setTimeout(dismiss, 200);
+    // Automatically reveal the UI after a brief delay for rendering
+    setTimeout(dismiss, 100);
     
   } catch (error) {
     console.error("Critical Engine Error during mount:", error);

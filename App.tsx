@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { HashRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { 
   Search, Sigma, Zap, ArrowLeft, Maximize, 
-  Bot, Send, Ghost, X, Shield, Play, Terminal
+  Bot, Send, Ghost, X, Shield, Play
 } from 'lucide-react';
 import htm from 'htm';
 import { GoogleGenAI } from "@google/genai";
@@ -96,19 +96,19 @@ const ARES_HUD = () => {
 
     try {
       const apiKey = (window as any).process?.env?.API_KEY || '';
-      if (!apiKey) throw new Error("Missing Uplink Key");
+      if (!apiKey) throw new Error("Missing Key");
       
       const ai = new GoogleGenAI({ apiKey });
       const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
         contents: userMsg,
         config: {
-          systemInstruction: 'You are ARES-1, a tactical gaming assistant for Math Hub. You provide gaming tips, strategy advice, and helpful information. Keep your tone professional, cyber-themed, and concise.'
+          systemInstruction: 'You are ARES-1, a tactical assistant for Math Hub. Be helpful and professional.'
         }
       });
-      setMessages(prev => [...prev, { role: 'ai', text: response.text || 'Uplink failure.' }]);
+      setMessages(prev => [...prev, { role: 'ai', text: response.text || 'ERROR.' }]);
     } catch (err) {
-      setMessages(prev => [...prev, { role: 'ai', text: 'Connection to ARES-1 restricted. Enable API keys in environment.' }]);
+      setMessages(prev => [...prev, { role: 'ai', text: 'CONNECTION_ERROR: Check API Key.' }]);
     } finally {
       setLoading(false);
     }
@@ -134,7 +134,6 @@ const ARES_HUD = () => {
                 </div>
               </div>
             `)}
-            ${loading && html`<div className="text-indigo-500 animate-pulse text-[8px] pl-2 font-black uppercase">Analyzing...</div>`}
           </div>
           <form onSubmit=${handleSend} className="p-3 bg-slate-900/80 border-t border-white/5 flex gap-2">
             <input type="text" value=${input} onInput=${(e: any) => setInput(e.target.value)} placeholder="Query ARES..." className="flex-1 bg-black/50 border border-white/10 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:border-indigo-500" />
@@ -149,10 +148,10 @@ const ARES_HUD = () => {
 const App = () => {
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('all');
-  const [cloak, setCloak] = useState(() => localStorage.getItem('mh_cloak_v29') === 'true');
+  const [cloak, setCloak] = useState(() => localStorage.getItem('mh_cloak_v30') === 'true');
 
   useEffect(() => {
-    localStorage.setItem('mh_cloak_v29', cloak.toString());
+    localStorage.setItem('mh_cloak_v30', cloak.toString());
     document.title = cloak ? "about:blank" : "Math Hub | Tactical Command";
     const handlePanic = (e: KeyboardEvent) => { if (e.key === 'Escape') window.location.replace("https://google.com"); };
     window.addEventListener('keydown', handlePanic);
@@ -283,7 +282,7 @@ const GameView = ({ games }: { games: any[] }) => {
         </div>
         <div className="bg-slate-900 p-10 rounded-[2.5rem] border border-white/5 space-y-6 h-fit">
            <div className="flex items-center gap-4 text-indigo-400 font-black text-[10px] uppercase tracking-widest"><${Shield} className="w-5 h-5" /> Protocol: ACTIVE</div>
-           <button onClick=${() => window.location.replace("https://google.com")} className="w-full py-5 bg-red-600/10 text-red-500 font-black text-[10px] uppercase tracking-[0.2em] rounded-2xl border border-red-500/20 hover:bg-red-600 hover:text-white transition-all uppercase">PANIC (ESC)</button>
+           <button onClick=${() => window.location.replace("https://google.com")} className="w-full py-5 bg-red-600/10 text-red-500 font-black text-[10px] uppercase tracking-[0.2em] rounded-2xl border border-red-500/20 hover:bg-red-600 hover:text-white transition-all">PANIC (ESC)</button>
         </div>
       </div>
     </div>
