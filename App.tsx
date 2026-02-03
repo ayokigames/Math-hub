@@ -86,7 +86,7 @@ const ARES_HUD = () => {
     if (scrollRef.current) scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
   }, [messages]);
 
-  const handleSend = async (e) => {
+  const handleSend = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!input.trim() || loading) return;
     const userMsg = input.trim();
@@ -133,7 +133,7 @@ const ARES_HUD = () => {
             `)}
           </div>
           <form onSubmit=${handleSend} className="p-3 bg-slate-900/80 border-t border-white/5 flex gap-2">
-            <input type="text" value=${input} onInput=${(e) => setInput(e.target.value)} placeholder="Query ARES..." className="flex-1 bg-black/50 border border-white/10 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:border-indigo-500" />
+            <input type="text" value=${input} onInput=${(e) => setInput((e.target as HTMLInputElement).value)} placeholder="Query ARES..." className="flex-1 bg-black/50 border border-white/10 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:border-indigo-500" />
             <button type="submit" className="p-2 bg-indigo-600 rounded-xl text-white"><${Send} className="w-4 h-4" /></button>
           </form>
         </div>
@@ -145,10 +145,10 @@ const ARES_HUD = () => {
 const App = () => {
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('all');
-  const [cloak, setCloak] = useState(() => localStorage.getItem('mh_cloak_v9') === 'true');
+  const [cloak, setCloak] = useState(() => localStorage.getItem('mh_cloak_v10') === 'true');
 
   useEffect(() => {
-    localStorage.setItem('mh_cloak_v9', cloak.toString());
+    localStorage.setItem('mh_cloak_v10', cloak.toString());
     document.title = cloak ? "about:blank" : "Math Hub | Tactical Command";
     const handlePanic = (e: KeyboardEvent) => { if (e.key === 'Escape') window.location.replace("https://google.com"); };
     window.addEventListener('keydown', handlePanic);
@@ -178,7 +178,7 @@ const App = () => {
                 type="text" 
                 placeholder="Scan tactical modules..." 
                 value=${search} 
-                onInput=${(e) => setSearch(e.target.value)} 
+                onInput=${(e) => setSearch((e.target as HTMLInputElement).value)} 
                 className="w-full bg-slate-950 border border-white/10 rounded-xl py-3 px-6 text-xs text-white focus:outline-none focus:border-indigo-500 font-mono transition-all" 
               />
             </div>
@@ -197,13 +197,20 @@ const App = () => {
           <aside className="w-full lg:w-72 space-y-10 shrink-0">
             <div className="space-y-4">
               <p className="px-6 text-[10px] font-black uppercase tracking-[0.4em] text-slate-600">Categories</p>
-              <nav className="flex lg:flex-col gap-1.5 overflow-x-auto pb-4 lg:pb-0">
+              <nav className="flex lg:flex-col gap-1.5 overflow-x-auto pb-4 lg:pb-0 scrollbar-hide">
                 ${['all', ...Object.values(GameCategory)].map(c => html`
                   <button key=${c} onClick=${() => setCategory(c)} className=${`px-8 py-4 rounded-2xl text-[11px] font-black uppercase tracking-widest whitespace-nowrap transition-all ${category === c ? 'bg-indigo-600 text-white shadow-lg' : 'text-slate-500 hover:text-slate-200 hover:bg-white/5'}`}>
                     ${c === 'all' ? 'All Units' : c}
                   </button>
                 `)}
               </nav>
+            </div>
+            <div className="p-8 rounded-[2rem] border border-white/5 space-y-4 hidden lg:block opacity-60">
+              <h4 className="text-[10px] font-black text-indigo-400 uppercase tracking-widest flex items-center gap-2"><${Cpu} className="w-4 h-4" /> Telemetry</h4>
+              <div className="space-y-2 font-mono text-[9px] text-slate-500">
+                <div className="flex justify-between"><span>Kernel</span><span className="text-green-400">V10_STABLE</span></div>
+                <div className="flex justify-between"><span>Status</span><span className="text-indigo-400">Online</span></div>
+              </div>
             </div>
           </aside>
           

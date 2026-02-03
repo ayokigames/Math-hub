@@ -5,7 +5,7 @@ import App from './App.tsx';
 
 const html = htm.bind(React.createElement);
 
-console.log("Kernel: Math Hub V9 (React 18.3.1 Stable)");
+console.log("Booting Kernel V10...");
 
 const mount = () => {
   const rootElement = document.getElementById('root');
@@ -21,18 +21,17 @@ const mount = () => {
       `
     );
     
-    // Auto-dismiss the loader after React takes control
-    setTimeout(() => {
-        if (typeof window['dismissLoader'] === 'function') {
-            window['dismissLoader']();
-        }
-    }, 500);
+    // Auto-dismiss the loader after React successfully renders
+    if (typeof window['dismissLoader'] === 'function') {
+      setTimeout(() => window['dismissLoader'](), 300);
+    }
   } catch (err) {
-    console.error("Mounting Error:", err);
-    // If we fail here, the Force Launch button in HTML still works.
+    console.error("BOOT_EXCEPTION:", err);
+    // If we crash, the button in HTML still allows manual bypass
   }
 };
 
+// Fire boot sequence immediately if DOM is ready
 if (document.readyState === 'complete' || document.readyState === 'interactive') {
   mount();
 } else {
