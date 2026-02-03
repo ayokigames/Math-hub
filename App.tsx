@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { HashRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { 
   Search, Sigma, Zap, ArrowLeft, Maximize, 
-  Bot, Send, Ghost, X, Shield, Play, Terminal
+  Bot, Send, Ghost, X, Shield, Play
 } from 'lucide-react';
 import htm from 'htm';
 import { GoogleGenAI } from "@google/genai";
@@ -146,10 +146,10 @@ const ARES_HUD = () => {
 const App = () => {
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('all');
-  const [cloak, setCloak] = useState(() => localStorage.getItem('mh_cloak_v26') === 'true');
+  const [cloak, setCloak] = useState(() => localStorage.getItem('mh_cloak_v27') === 'true');
 
   useEffect(() => {
-    localStorage.setItem('mh_cloak_v26', cloak.toString());
+    localStorage.setItem('mh_cloak_v27', cloak.toString());
     document.title = cloak ? "about:blank" : "Math Hub | Tactical Command";
     const handlePanic = (e: KeyboardEvent) => { if (e.key === 'Escape') window.location.replace("https://google.com"); };
     window.addEventListener('keydown', handlePanic);
