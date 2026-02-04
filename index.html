@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Math Hub | Tactical Command</title>
     <script>
-        // EMERGENCY BOOTSTRAP - Prevents global crashes
+        // EMERGENCY BOOTSTRAP
         window.process = { env: { API_KEY: "" } };
         
         window.forceDismiss = function() {
-            console.log("RECOVERY_PROTOCOL_V30: Executing forced UI reveal.");
+            console.log("RECOVERY_PROTOCOL_V31: Clearing boot screen.");
             var loader = document.getElementById('emergency-loader');
             if (loader) {
                 loader.style.opacity = '0';
@@ -23,10 +23,10 @@
             return false;
         };
 
-        // Watchdog: If the app hasn't loaded in 2.5s, force clear the screen
+        // Watchdog: If site hasn't revealed in 2.5s, force it.
         setTimeout(function() {
             if (document.getElementById('emergency-loader')) {
-                console.warn("Watchdog: Engine synchronization timeout. Auto-clearing loader.");
+                console.warn("Watchdog: Engine synchronization timeout. Auto-clearing.");
                 window.forceDismiss();
             }
         }, 2500);
@@ -76,6 +76,8 @@
             font-weight: 900 !important;
             box-shadow: 0 10px 40px rgba(99, 102, 241, 0.4) !important;
         }
+
+        .bypass-btn:hover { background: #4f46e5 !important; transform: scale(1.05); transition: 0.2s; }
     </style>
     <script type="importmap">
 {
@@ -95,11 +97,11 @@
 <body>
     <div id="emergency-loader">
         <div class="loader-ring"></div>
-        <div class="font-orbitron" style="font-size: 10px; color: #6366f1; letter-spacing: 5px; font-weight: 900;">BOOT_V30_STABLE</div>
+        <div class="font-orbitron" style="font-size: 10px; color: #6366f1; letter-spacing: 5px; font-weight: 900;">HUB_STABLE_V31</div>
         <button class="bypass-btn" onclick="window.forceDismiss(); return false;">
-            Force Launch Hub
+            Launch Terminal
         </button>
-        <p style="font-size: 9px; color: #475569; font-family: 'JetBrains Mono'; opacity: 0.5; text-align: center;">CONFLICTS PURGED | SYSTEM READY</p>
+        <p style="font-size: 9px; color: #475569; font-family: 'JetBrains Mono'; opacity: 0.5; text-align: center;">V19_CONFLICT_RESOLVED | REACT_18_ACTIVE</p>
     </div>
     <div id="root"></div>
     <script type="module" src="./index.tsx"></script>

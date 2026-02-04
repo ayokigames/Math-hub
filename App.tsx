@@ -2,7 +2,7 @@ import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { HashRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
 import { 
   Search, Sigma, Zap, ArrowLeft, Maximize, 
-  Bot, Send, Ghost, X, Shield, Play
+  Bot, Send, Ghost, X, Shield, Play, Terminal
 } from 'lucide-react';
 import htm from 'htm';
 import { GoogleGenAI } from "@google/genai";
@@ -31,7 +31,7 @@ const GAMES = [
     description: 'Kinetic platforming module. Master momentum across shifting logic sectors and obstacles.',
     category: GameCategory.ACTION,
     thumbnail: 'https://images.unsplash.com/photo-1590674899484-d5640e854abe?auto=format&fit=crop&q=80&w=600',
-    url: 'https://genizymath.github.io/iframe/81.html'
+    url: './clusterrush/index.html'
   },
   {
     id: 'bad-parenting-1',
@@ -39,7 +39,7 @@ const GAMES = [
     description: 'Psychological survival strategy. Analyze environmental cues and complex household dynamics.',
     category: GameCategory.STRATEGY,
     thumbnail: 'https://images.unsplash.com/photo-1505632958218-4f23394784a6?auto=format&fit=crop&q=80&w=600',
-    url: 'https://genizymath.github.io/iframe/166.html'
+    url: './badparenting1/index.html'
   },
   {
     id: 'kindergarten',
@@ -47,7 +47,7 @@ const GAMES = [
     description: 'High-stakes social interaction simulator. Navigate school-yard diplomacy in a tactical environment.',
     category: GameCategory.STRATEGY,
     thumbnail: 'https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&q=80&w=600',
-    url: 'https://genizymath.github.io/iframe/445.html'
+    url: './kindergarten/index.html'
   },
   {
     id: 'kindergarten-2',
@@ -55,7 +55,7 @@ const GAMES = [
     description: 'Advanced tactical social simulator. Complex NPC logic and expanded exploration sectors.',
     category: GameCategory.STRATEGY,
     thumbnail: 'https://images.unsplash.com/photo-1546410531-bb4caa6b424d?auto=format&fit=crop&q=80&w=600',
-    url: 'https://genizymath.github.io/iframe/446.html'
+    url: './kindergarten2/index.html'
   },
   {
     id: 'escape-road',
@@ -63,7 +63,7 @@ const GAMES = [
     description: 'Tactical navigation module. Calibrate reflexes for high-density urban transit avoidance.',
     category: GameCategory.ACTION,
     thumbnail: 'https://images.unsplash.com/photo-1511884642898-4c92249e20b6?auto=format&fit=crop&q=80&w=600',
-    url: 'https://genizymath.github.io/iframe/264.html'
+    url: './escaperoad/index.html'
   },
   {
     id: 'cookie-clicker',
@@ -95,20 +95,17 @@ const ARES_HUD = () => {
     setLoading(true);
 
     try {
-      const apiKey = (window as any).process?.env?.API_KEY || '';
-      if (!apiKey) throw new Error("Missing Key");
-      
-      const ai = new GoogleGenAI({ apiKey });
+      const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
       const response = await ai.models.generateContent({
         model: 'gemini-3-flash-preview',
         contents: userMsg,
         config: {
-          systemInstruction: 'You are ARES-1, a tactical assistant for Math Hub. Be helpful and professional.'
+          systemInstruction: 'You are ARES-1, a tactical assistant for Math Hub. You provide gaming tips and strategy advice. Keep your tone professional, cyber-themed, and very concise.'
         }
       });
-      setMessages(prev => [...prev, { role: 'ai', text: response.text || 'ERROR.' }]);
+      setMessages(prev => [...prev, { role: 'ai', text: response.text || 'Uplink failure.' }]);
     } catch (err) {
-      setMessages(prev => [...prev, { role: 'ai', text: 'CONNECTION_ERROR: Check API Key.' }]);
+      setMessages(prev => [...prev, { role: 'ai', text: 'CONNECTION_ERROR: AI Uplink restricted.' }]);
     } finally {
       setLoading(false);
     }
@@ -134,6 +131,7 @@ const ARES_HUD = () => {
                 </div>
               </div>
             `)}
+            ${loading && html`<div className="text-indigo-500 animate-pulse text-[8px] pl-2 font-black uppercase tracking-widest">Processing...</div>`}
           </div>
           <form onSubmit=${handleSend} className="p-3 bg-slate-900/80 border-t border-white/5 flex gap-2">
             <input type="text" value=${input} onInput=${(e: any) => setInput(e.target.value)} placeholder="Query ARES..." className="flex-1 bg-black/50 border border-white/10 rounded-xl px-4 py-2 text-xs text-white focus:outline-none focus:border-indigo-500" />
@@ -148,10 +146,10 @@ const ARES_HUD = () => {
 const App = () => {
   const [search, setSearch] = useState('');
   const [category, setCategory] = useState('all');
-  const [cloak, setCloak] = useState(() => localStorage.getItem('mh_cloak_v30') === 'true');
+  const [cloak, setCloak] = useState(() => localStorage.getItem('mh_cloak_v31') === 'true');
 
   useEffect(() => {
-    localStorage.setItem('mh_cloak_v30', cloak.toString());
+    localStorage.setItem('mh_cloak_v31', cloak.toString());
     document.title = cloak ? "about:blank" : "Math Hub | Tactical Command";
     const handlePanic = (e: KeyboardEvent) => { if (e.key === 'Escape') window.location.replace("https://google.com"); };
     window.addEventListener('keydown', handlePanic);
@@ -177,12 +175,13 @@ const App = () => {
             <//>
             
             <div className="flex-1 max-w-xl relative">
+              <${Search} className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
               <input 
                 type="text" 
                 placeholder="Scan tactical modules..." 
                 value=${search} 
                 onInput=${(e: any) => setSearch(e.target.value)} 
-                className="w-full bg-slate-950 border border-white/10 rounded-xl py-3 px-6 text-xs text-white focus:outline-none focus:border-indigo-500 font-mono transition-all" 
+                className="w-full bg-slate-950 border border-white/10 rounded-xl py-3 pl-12 pr-6 text-xs text-white focus:outline-none focus:border-indigo-500 font-mono transition-all" 
               />
             </div>
             
@@ -282,6 +281,7 @@ const GameView = ({ games }: { games: any[] }) => {
         </div>
         <div className="bg-slate-900 p-10 rounded-[2.5rem] border border-white/5 space-y-6 h-fit">
            <div className="flex items-center gap-4 text-indigo-400 font-black text-[10px] uppercase tracking-widest"><${Shield} className="w-5 h-5" /> Protocol: ACTIVE</div>
+           <div className="text-[11px] text-slate-500 font-medium">This module is currently running in a sandboxed tactical environment. Precision is advised.</div>
            <button onClick=${() => window.location.replace("https://google.com")} className="w-full py-5 bg-red-600/10 text-red-500 font-black text-[10px] uppercase tracking-[0.2em] rounded-2xl border border-red-500/20 hover:bg-red-600 hover:text-white transition-all">PANIC (ESC)</button>
         </div>
       </div>

@@ -5,12 +5,11 @@ import App from './App.tsx';
 
 const html = htm.bind(React.createElement);
 
-const startEngine = () => {
-  console.log("Kernel: Initializing Hub V30 Engine...");
+const mountHub = () => {
   const rootElement = document.getElementById('root');
   if (!rootElement) return;
 
-  const dismiss = () => {
+  const reveal = () => {
     if (typeof (window as any).forceDismiss === 'function') {
       (window as any).forceDismiss();
     }
@@ -26,17 +25,20 @@ const startEngine = () => {
       `
     );
     
-    // Automatically reveal the UI after a brief delay for rendering
-    setTimeout(dismiss, 100);
+    // Attempt reveal as soon as the initial render cycle is complete
+    requestAnimationFrame(() => {
+      setTimeout(reveal, 100);
+    });
     
   } catch (error) {
-    console.error("Critical Engine Error during mount:", error);
-    dismiss();
+    console.error("FATAL_BOOT_ERROR:", error);
+    reveal(); // Reveal anyway so user can see what's wrong or bypass
   }
 };
 
+// Check readyState to ensure script runs correctly
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', startEngine);
+    document.addEventListener('DOMContentLoaded', mountHub);
 } else {
-    startEngine();
+    mountHub();
 }
