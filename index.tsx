@@ -5,7 +5,7 @@ import App from './App.tsx';
 
 const html = htm.bind(React.createElement);
 
-const mountHub = () => {
+const start = () => {
   const rootElement = document.getElementById('root');
   if (!rootElement) return;
 
@@ -25,20 +25,19 @@ const mountHub = () => {
       `
     );
     
-    // Attempt reveal as soon as the initial render cycle is complete
+    // Tiny delay to allow React to mount its first frame
     requestAnimationFrame(() => {
       setTimeout(reveal, 100);
     });
     
   } catch (error) {
-    console.error("FATAL_BOOT_ERROR:", error);
-    reveal(); // Reveal anyway so user can see what's wrong or bypass
+    console.error("Mount error:", error);
+    reveal();
   }
 };
 
-// Check readyState to ensure script runs correctly
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', mountHub);
+    document.addEventListener('DOMContentLoaded', start);
 } else {
-    mountHub();
+    start();
 }
