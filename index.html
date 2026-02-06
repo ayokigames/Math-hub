@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Math Hub | Tactical Command</title>
     <script>
-        // EMERGENCY BOOTSTRAP
-        // Note: process.env.API_KEY is handled by the platform injection
+        // EMERGENCY BOOTSTRAP - Prevents global crashes
+        window.process = { env: { API_KEY: "" } };
         
         window.forceDismiss = function() {
-            console.log("RECOVERY_PROTOCOL: Executing forced UI reveal.");
+            console.log("RECOVERY_PROTOCOL_V32: Executing forced UI reveal.");
             var loader = document.getElementById('emergency-loader');
             if (loader) {
                 loader.style.opacity = '0';
@@ -23,13 +23,13 @@
             return false;
         };
 
-        // Fail-safe: If the app hasn't revealed in 3 seconds, force it.
+        // Watchdog: If the app hasn't loaded in 2.5s, force clear the screen
         setTimeout(function() {
             if (document.getElementById('emergency-loader')) {
-                console.warn("Watchdog: App load taking longer than expected. Bypassing loader.");
+                console.warn("Watchdog: Engine synchronization timeout. Auto-clearing loader.");
                 window.forceDismiss();
             }
-        }, 3000);
+        }, 2500);
     </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&family=Orbitron:wght@400;700;900&family=JetBrains+Mono&display=swap" rel="stylesheet">
@@ -46,12 +46,13 @@
             z-index: 2147483647 !important;
             flex-direction: column !important;
             gap: 2rem !important;
+            pointer-events: all !important;
             transition: opacity 0.5s ease;
         }
         
         .loader-ring {
-            width: 60px;
-            height: 60px;
+            width: 70px;
+            height: 70px;
             border: 3px solid rgba(99, 102, 241, 0.1);
             border-top-color: #6366f1;
             border-radius: 50%;
@@ -62,18 +63,19 @@
 
         .bypass-btn {
             appearance: none;
-            background: transparent;
-            border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 8px;
-            color: #475569;
-            font-size: 10px;
-            padding: 8px 16px;
-            cursor: pointer;
-            font-family: 'JetBrains Mono', monospace;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            background: #6366f1 !important;
+            border: 2px solid rgba(255,255,255,0.2) !important;
+            border-radius: 12px !important;
+            color: white !important;
+            font-size: 11px !important;
+            padding: 16px 36px !important;
+            cursor: pointer !important;
+            font-family: 'Orbitron', sans-serif !important;
+            text-transform: uppercase !important;
+            letter-spacing: 4px !important;
+            font-weight: 900 !important;
+            box-shadow: 0 10px 40px rgba(99, 102, 241, 0.4) !important;
         }
-        .bypass-btn:hover { color: #6366f1; border-color: #6366f1; }
     </style>
     <script type="importmap">
 {
@@ -93,8 +95,11 @@
 <body>
     <div id="emergency-loader">
         <div class="loader-ring"></div>
-        <div class="font-orbitron text-[10px] text-indigo-500 font-black tracking-[0.3em]">INITIALIZING_HUB</div>
-        <button class="bypass-btn" onclick="window.forceDismiss()">Manual Bypass</button>
+        <div class="font-orbitron" style="font-size: 10px; color: #6366f1; letter-spacing: 5px; font-weight: 900;">BOOT_V32_STABLE</div>
+        <button class="bypass-btn" onclick="window.forceDismiss(); return false;">
+            Force Launch Hub
+        </button>
+        <p style="font-size: 9px; color: #475569; font-family: 'JetBrains Mono'; opacity: 0.5; text-align: center;">CONFLICTS PURGED | SYSTEM READY</p>
     </div>
     <div id="root"></div>
     <script type="module" src="./index.tsx"></script>

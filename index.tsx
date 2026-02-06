@@ -6,10 +6,11 @@ import App from './App.tsx';
 const html = htm.bind(React.createElement);
 
 const startEngine = () => {
+  console.log("Kernel: Initializing Hub Engine...");
   const rootElement = document.getElementById('root');
   if (!rootElement) return;
 
-  const reveal = () => {
+  const dismiss = () => {
     if (typeof (window as any).forceDismiss === 'function') {
       (window as any).forceDismiss();
     }
@@ -25,14 +26,14 @@ const startEngine = () => {
       `
     );
     
-    // Tiny delay to allow React to mount its first frame before hiding loader
+    // Reveal UI as soon as React starts its render loop
     requestAnimationFrame(() => {
-      setTimeout(reveal, 150);
+      setTimeout(dismiss, 100);
     });
     
   } catch (error) {
-    console.error("Mount error:", error);
-    reveal(); // Ensure loader is gone so user can see errors or attempt bypass
+    console.error("Critical Engine Error during mount:", error);
+    dismiss();
   }
 };
 
